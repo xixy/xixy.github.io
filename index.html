@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>习翔宇</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="习翔宇">
+<meta property="og:url" content="http://xixy.github.io/index.html">
+<meta property="og:site_name" content="习翔宇">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="习翔宇">
+  
+    <link rel="alternate" href="/atom.xml" title="习翔宇" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">习翔宇</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">习翔宇的博客</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://xixy.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-C-C-头文件相互包含的编译问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/03/07/C-C-头文件相互包含的编译问题/" class="article-date">
+  <time datetime="2017-03-07T01:41:40.000Z" itemprop="datePublished">2017-03-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/07/C-C-头文件相互包含的编译问题/">C/C++头文件相互包含的编译问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1 问题描述"></a>1 问题描述</h1><p>两个类Class Message和Class Folder分别定义在两个不同的头文件Message.h和Folder.h中，然后类成员函数的实现分别在Message.cpp和Folder.cpp文件中，两个文件分别编译为.o文件，与main.cpp文件合并编译链接为可运行的二进制文件。代码如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">/**************************************************************Message.h*****************************/</div><div class="line">#ifndef MESSAGE_H_</div><div class="line">#define MESSAGE_H_</div><div class="line"></div><div class="line">using namespace std;</div><div class="line">#include&lt;iostream&gt;</div><div class="line">#include&lt;set&gt;</div><div class="line">#include &quot;Folder.h&quot;</div><div class="line">class Message</div><div class="line">&#123;</div><div class="line">	friend class Folder;</div><div class="line">	friend void swap(Message &amp;lhs, Message &amp;rhs);</div><div class="line">public:</div><div class="line">	explicit Message(const std::string &amp;str=&quot;&quot;):contents(str)&#123;&#125;</div><div class="line">	~Message();</div><div class="line">	Message(const Message&amp;);</div><div class="line">	Message&amp; operator=(const Message&amp;);</div><div class="line">	void save(Folder&amp;);</div><div class="line">	void remove(Folder&amp;);</div><div class="line">private:</div><div class="line">	std::string contents;</div><div class="line">	std::set&lt;Folder *&gt;folders;</div><div class="line">	void add_to_Folders(const Message&amp;);</div><div class="line">	void remove_from_Folders();</div><div class="line"></div><div class="line">&#125;;</div><div class="line">#endif</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">/***************************************************************Folder.h*****************************/</div><div class="line">#ifndef FOLDER_H_</div><div class="line"></div><div class="line">#define FOLDER_H_</div><div class="line"></div><div class="line">#include&lt;iostream&gt;</div><div class="line">#include &quot;Message.h&quot;</div><div class="line">using namespace std;</div><div class="line">class Folder</div><div class="line">&#123;</div><div class="line">public:</div><div class="line">	static int count;</div><div class="line">	int folder_index;</div><div class="line">	friend class Message;</div><div class="line">	Folder();</div><div class="line">	~Folder();</div><div class="line">	void addMsg(Message *m);</div><div class="line">	void remMsg(Message *m);</div><div class="line">	void show();</div><div class="line">private:</div><div class="line">	std::set&lt;Message *&gt; messages;</div><div class="line"></div><div class="line">&#125;;</div><div class="line">#endif</div></pre></td></tr></table></figure>
+<p>可以看到两个类内都有彼此的类对象作为自己的成员变量，因此需要在头文件中进行include，这样才能预处理、编译通过。对于.cpp文件不重要，所以这里不贴出来。</p>
+<p>整体项目的Makefile如下所示</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">main:Folder Message</div><div class="line">	g++ -o main main.cpp Message.o Folder.o -std=c++11</div><div class="line">Message:Message.h Message.cpp </div><div class="line">	g++ -c -fpic Message.cpp -std=c++11 -I./</div><div class="line">Folder:Folder.h Folder.cpp</div><div class="line">	g++ -c -fpic Folder.cpp -std=c++11</div></pre></td></tr></table></figure>
+<p>在对Message目标执行语句的时候就出错了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">In file included from Message.h:8:0,</div><div class="line">                 from Message.cpp:1:</div><div class="line">Folder.h:17:14: error: ‘Message’ has not been declared</div><div class="line">  void addMsg(Message *m);</div><div class="line">              ^</div><div class="line">Folder.h:18:14: error: ‘Message’ has not been declared</div><div class="line">  void remMsg(Message *m);</div><div class="line">              ^</div><div class="line">Folder.h:21:11: error: ‘Message’ was not declared in this scope</div><div class="line">  std::set&lt;Message *&gt; messages;</div><div class="line">           ^</div><div class="line">Folder.h:21:20: error: template argument 1 is invalid</div><div class="line">  std::set&lt;Message *&gt; messages;</div></pre></td></tr></table></figure>
+<p>显然这里是没有办法找到Message类的定义</p>
+<h1 id="2-问题分析"><a href="#2-问题分析" class="headerlink" title="2 问题分析"></a>2 问题分析</h1><p>g++进行编译的时候，首先进行预处理将包含的头文件展开，得到的结果如下所示，我们以Message.h中展开Folder.h为例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">/**************************************************************Message.h*****************************/</div><div class="line">#ifndef MESSAGE_H_</div><div class="line">#define MESSAGE_H_</div><div class="line"></div><div class="line">using namespace std;</div><div class="line">#include&lt;iostream&gt;</div><div class="line">#include&lt;set&gt;</div><div class="line"></div><div class="line">/**********展开的部分开始**************/</div><div class="line">class Folder</div><div class="line">&#123;</div><div class="line">public:</div><div class="line">	static int count;</div><div class="line">	int folder_index;</div><div class="line">	friend class Message;</div><div class="line">	Folder();</div><div class="line">	~Folder();</div><div class="line">	void addMsg(Message *m);</div><div class="line">	void remMsg(Message *m);</div><div class="line">	void show();</div><div class="line">private:</div><div class="line">	std::set&lt;Message *&gt; messages;</div><div class="line"></div><div class="line">&#125;;</div><div class="line"></div><div class="line">/**********展开的部分结束**************/</div><div class="line">class Message</div><div class="line">&#123;</div><div class="line">	friend class Folder;</div><div class="line">	friend void swap(Message &amp;lhs, Message &amp;rhs);</div><div class="line">public:</div><div class="line">	explicit Message(const std::string &amp;str=&quot;&quot;):contents(str)&#123;&#125;</div><div class="line">	~Message();</div><div class="line">	Message(const Message&amp;);</div><div class="line">	Message&amp; operator=(const Message&amp;);</div><div class="line">	void save(Folder&amp;);</div><div class="line">	void remove(Folder&amp;);</div><div class="line">private:</div><div class="line">	std::string contents;</div><div class="line">	std::set&lt;Folder *&gt;folders;</div><div class="line">	void add_to_Folders(const Message&amp;);</div><div class="line">	void remove_from_Folders();</div><div class="line"></div><div class="line">&#125;;</div><div class="line">#endif</div></pre></td></tr></table></figure>
+<p>这样对展开的Message.h进行处理的时候，Folder中包含了Message类对象，但是因为Class Message的定义在下面，所以没法找到。</p>
+<p>那么能不能把#include “Folder.h”放到类Class的定义的下面呢？显然不行，因为Class Message包含了Folder类对象，这样又会找不到Class Folder的定义。</p>
+<p>对于Folder.h同理，include的Folder.h展开之后，会发现找不到Folder的定义。</p>
+<h1 id="3-问题解决"><a href="#3-问题解决" class="headerlink" title="3 问题解决"></a>3 问题解决</h1><p>在Message.h的类定义之前加上Class Message;的前置声明语句即可，这样就不会再预处理编译的时候报找不到Message的定义的错误了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">#ifndef MESSAGE_H_</div><div class="line">#define MESSAGE_H_</div><div class="line"></div><div class="line">using namespace std;</div><div class="line">#include&lt;iostream&gt;</div><div class="line">#include&lt;set&gt;</div><div class="line">class Message;//在Folder.h展开之前的地方添加类的声明语句</div><div class="line">#include &quot;Folder.h&quot;</div><div class="line">class Message</div><div class="line">&#123;</div><div class="line">	friend class Folder;</div><div class="line">	friend void swap(Message &amp;lhs, Message &amp;rhs);</div><div class="line">public:</div><div class="line">	explicit Message(const std::string &amp;str=&quot;&quot;):contents(str)&#123;&#125;</div><div class="line">	~Message();</div><div class="line">	Message(const Message&amp;);</div><div class="line">	Message&amp; operator=(const Message&amp;);</div><div class="line">	void save(Folder&amp;);</div><div class="line">	void remove(Folder&amp;);</div><div class="line">private:</div><div class="line">	std::string contents;</div><div class="line">	std::set&lt;Folder *&gt;folders;</div><div class="line">	void add_to_Folders(const Message&amp;);</div><div class="line">	void remove_from_Folders();</div><div class="line"></div><div class="line">&#125;;</div><div class="line"></div><div class="line">#endif</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://xixy.github.io/2017/03/07/C-C-头文件相互包含的编译问题/" data-id="cizyverdm0000dlvvp817mudr" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/07/C-C-头文件相互包含的编译问题/">C/C++头文件相互包含的编译问题</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 习翔宇<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
