@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>UML视图及diagram总结 | 习翔宇</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1 UML介绍UML的全称，统一建模语言（UML是 Unified Modeling Language的缩写）是用来对软件系统进行可视化建模的一种语言。UML为面向对象开发系统的产品进行说明、可视化、和编制文档的一种标准语言。
+什么是模型？模型是对现实世界的形状或状态的抽象模拟和简化。为什么要建模？
+
+为了能够更好地理解正在开发的系统。通过建模，可以达到四个目的：
+
+有助于按照需求对系统进行可视化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UML视图及diagram总结">
+<meta property="og:url" content="http://xixy.github.io/2017/03/10/UML视图及diagram总结/index.html">
+<meta property="og:site_name" content="习翔宇">
+<meta property="og:description" content="1 UML介绍UML的全称，统一建模语言（UML是 Unified Modeling Language的缩写）是用来对软件系统进行可视化建模的一种语言。UML为面向对象开发系统的产品进行说明、可视化、和编制文档的一种标准语言。
+什么是模型？模型是对现实世界的形状或状态的抽象模拟和简化。为什么要建模？
+
+为了能够更好地理解正在开发的系统。通过建模，可以达到四个目的：
+
+有助于按照需求对系统进行可视化">
+<meta property="og:image" content="http://pic1.tianmaying.com/md-image/3345aa3dfcb47b06821e89c47922720d.png">
+<meta property="og:image" content="http://pic1.tianmaying.com/md-image/bc07b240c1939c4e5b17d21fba602073.gif">
+<meta property="og:image" content="http://pic1.tianmaying.com/md-image/5e8422ec12a9559c358d878496d9a272.png">
+<meta property="og:image" content="http://pic1.tianmaying.com/md-image/a60d5a2c88805ea95f5498adb103f9a9.png">
+<meta property="og:image" content="http://pic1.tianmaying.com/md-image/cd0609fb89516db99c06047e2a245244.png">
+<meta property="og:image" content="http://pic1.tianmaying.com/md-image/2888f9043d0a0f0053ad43ce7dac5252.png">
+<meta property="og:image" content="http://pic1.tianmaying.com/md-image/8cf54dba6e27cd6bf04f87611a72b19c.png">
+<meta property="og:image" content="http://pic1.tianmaying.com/md-image/ae4e5125dcdfc08a8ac256cbb23b213f.png">
+<meta property="og:image" content="http://pic1.tianmaying.com/md-image/114df3804dc8d5a3c66101fb6aa743f0.png">
+<meta property="og:updated_time" content="2017-03-10T01:57:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="UML视图及diagram总结">
+<meta name="twitter:description" content="1 UML介绍UML的全称，统一建模语言（UML是 Unified Modeling Language的缩写）是用来对软件系统进行可视化建模的一种语言。UML为面向对象开发系统的产品进行说明、可视化、和编制文档的一种标准语言。
+什么是模型？模型是对现实世界的形状或状态的抽象模拟和简化。为什么要建模？
+
+为了能够更好地理解正在开发的系统。通过建模，可以达到四个目的：
+
+有助于按照需求对系统进行可视化">
+<meta name="twitter:image" content="http://pic1.tianmaying.com/md-image/3345aa3dfcb47b06821e89c47922720d.png">
+  
+    <link rel="alternate" href="/atom.xml" title="习翔宇" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">习翔宇</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">习翔宇的博客</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://xixy.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-UML视图及diagram总结" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/03/10/UML视图及diagram总结/" class="article-date">
+  <time datetime="2017-03-10T01:57:05.000Z" itemprop="datePublished">2017-03-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      UML视图及diagram总结
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="1-UML介绍"><a href="#1-UML介绍" class="headerlink" title="1 UML介绍"></a>1 UML介绍</h1><p><span style="color: rgb(0, 0, 0);">UML的全称，统一建模语言（UML是 Unified Modeling Language的缩写）是用来对软件系统进行可视化建模的一种语言。UML为面向对象开发系统的产品进行说明、可视化、和编制文档的一种标准语言。</span></p>
+<font color="#000000">什么是模型？</font><font color="#000000"><span style="color: rgb(0, 0, 0);">模型是对现实世界的形状或状态的抽象模拟和简化。</span></font><font color="#000000">为什么要建模？</font>
+
+<p>为了能够更好地理解正在开发的系统。通过建模，可以达到四个目的：</p>
+<ol>
+<li>有助于按照需求对系统进行可视化的分析</li>
+<li>能够系统的结构或行为</li>
+<li>给出了知道构造系统的模板</li>
+<li>对做出的决策进行文档化</li>
+</ol>
+<h1 id="2-UML的7种视图"><a href="#2-UML的7种视图" class="headerlink" title="2 UML的7种视图"></a>2 UML的7种视图</h1><p><img src="http://pic1.tianmaying.com/md-image/3345aa3dfcb47b06821e89c47922720d.png" alt="1359378701_9687.png"></p>
+<p><img src="http://pic1.tianmaying.com/md-image/bc07b240c1939c4e5b17d21fba602073.gif" alt="1359378709_1432.gif"></p>
+<p><span style="color: rgb(0, 0, 0);">UML的七种视图各有各自的特点，各自有各自的作用。只有正确的认识七种视图才能对UML的九种图进行更加详细、深入的学习。UML的九种图是七种视图的具体表现形式。<span style="color: rgb(0, 0, 0);">UML的视图，在每一种视图中都包含一个或多种图</span></span></p>
+<p><span style="color: rgb(0, 0, 0);"></span></p>
+<h1 id="3-UML的9种图-diagram"><a href="#3-UML的9种图-diagram" class="headerlink" title="3 UML的9种图(diagram)"></a>3 UML的9种图(diagram)</h1><h2 id="3-1-用例图"><a href="#3-1-用例图" class="headerlink" title="3.1 用例图"></a>3.1 用例图</h2><p>概念：<span style="color: rgb(0, 0, 0);">描述用户需求，从用户的角度描述系统的功能</span></p>
+<font color="#000000">描述方式：<span style="color: rgb(0, 0, 0);">椭圆表示某个用例；人形符号表示角色</span></font>
+
+<font color="#000000">目的：<span style="color: rgb(0, 0, 0);">帮组开发团队以一种可视化的方式理解系统的功能需求</span></font>
+
+<font color="#000000"><span style="color: rgb(0, 0, 0);"><img src="http://pic1.tianmaying.com/md-image/5e8422ec12a9559c358d878496d9a272.png" alt="用例图.png"></span></font>
+
+<p><span style="color: rgb(0, 0, 0);"></span></p>
+<h2 id="3-2-静态图"><a href="#3-2-静态图" class="headerlink" title="3.2 静态图"></a>3.2 静态图</h2><h3 id="3-2-1-类图"><a href="#3-2-1-类图" class="headerlink" title="3.2.1 类图"></a>3.2.1 类图</h3><p><span style="color: rgb(0, 0, 0);">概念：显示系统的静态结构，表示不同的实体是如何相关联的</span></p>
+<font color="#000000">描述方式：矩形和箭头</font>
+
+<font color="#000000">目的：<span style="color: rgb(0, 0, 0);">表示一个逻辑类或实现类，逻辑类通常是用户的业务所涉及的事物；实现类是程序员处理的实体</span></font>
+
+<font color="#000000"><span style="color: rgb(0, 0, 0);"><br></span></font>
+
+<font color="#000000"><span style="color: rgb(0, 0, 0);"><img src="http://pic1.tianmaying.com/md-image/a60d5a2c88805ea95f5498adb103f9a9.png" alt="类图.png"><br></span></font>
+
+<font color="#000000"><span style="color: rgb(0, 0, 0);"><br></span></font>
+
+<h3 id="3-2-2-对象图"><a href="#3-2-2-对象图" class="headerlink" title="3.2.2 对象图"></a>3.2.2 对象图</h3><p>概念：<span style="color: rgb(0, 0, 0);">类图的一个实例，描述系统在具体时间点上所包含的对象以及各个对象的关系</span></p>
+<p><span style="color: rgb(0, 0, 0);"><img src="http://pic1.tianmaying.com/md-image/cd0609fb89516db99c06047e2a245244.png" alt="对象图.png"><br></span></p>
+<h2 id="3-3-交互图"><a href="#3-3-交互图" class="headerlink" title="3.3 交互图"></a>3.3 交互图</h2><p>用来描述对象之间的交互关系</p>
+<h3 id="3-3-1-序列图"><a href="#3-3-1-序列图" class="headerlink" title="3.3.1 序列图"></a>3.3.1 序列图</h3><p>概念：描述对象之间的交互顺序，着重体现对象间消息传递的时间顺序</p>
+<p>描述方式横跨图的顶部，每个框表示每个类的实例或对象；类实例名称和类名称使用冒号分开</p>
+<p>作用：显示流程中不同对象之间的调用关系，还可以显示不同对象的不同调用。</p>
+<p><img src="http://pic1.tianmaying.com/md-image/2888f9043d0a0f0053ad43ce7dac5252.png" alt="序列图.png"></p>
+<h3 id="3-3-2-协作图"><a href="#3-3-2-协作图" class="headerlink" title="3.3.2 协作图"></a>3.3.2 协作图</h3><p><span style="color: rgb(0, 0, 0);">描述对象之间的合作关系，侧重对象之间的消息传递</span></p>
+<h2 id="3-4-行为图"><a href="#3-4-行为图" class="headerlink" title="3.4 行为图"></a>3.4 行为图</h2><p><span style="color: rgb(0, 0, 0);">描述系统的动态模型和对象之间的交互关系</span></p>
+<h3 id="3-4-1-状态图"><a href="#3-4-1-状态图" class="headerlink" title="3.4.1 状态图"></a>3.4.1 状态图</h3><p>概念：描述对象的所有状态以及事件发生而引起的状态之间的转移</p>
+<p>描述方式：</p>
+<ol>
+<li>起始点：实心圆</li>
+<li>状态之间的转换：使用开肩头的线段</li>
+<li>状态：圆角矩阵</li>
+<li>判断点：空心圆</li>
+<li>一个或多个终止点：内部包含实心圆的圆</li>
+</ol>
+<p>目的：<span style="color: rgb(0, 0, 0);">表示某个类所处的不同状态以及该类在这些状态中的转换过程</span></p>
+<h3 id="3-4-2-活动图"><a href="#3-4-2-活动图" class="headerlink" title="3.4.2 活动图"></a>3.4.2 活动图</h3><p>概念：<span style="color: rgb(0, 0, 0);">表示某个类所处的不同状态以及该类在这些状态中的转换过程</span></p>
+<p>描述方式：</p>
+<ol>
+<li>起始点：实心圆</li>
+<li>活动：圆角矩阵</li>
+<li>终止点：内部包含实心圆的圆</li>
+<li>泳道：实际执行活动的对象</li>
+</ol>
+<p>目的：<span style="color: rgb(0, 0, 0);">表示两个或多个对象之间在处理某个活动时的过程控制流程</span></p>
+<p><span style="color: rgb(0, 0, 0);"><img src="http://pic1.tianmaying.com/md-image/8cf54dba6e27cd6bf04f87611a72b19c.png" alt="活动图.png"><br></span></p>
+<h2 id="3-5-实现图"><a href="#3-5-实现图" class="headerlink" title="3.5 实现图"></a>3.5 实现图</h2><h3 id="3-5-1-构建图"><a href="#3-5-1-构建图" class="headerlink" title="3.5.1 构建图"></a>3.5.1 构建图</h3><p>概念：<span style="color: rgb(0, 0, 0);">述代码构件的物理结构以及各构件之间的依赖关系</span></p>
+<p>描述方式：构件</p>
+<p>目的：<span style="color: rgb(0, 0, 0);">提供系统的物理视图，根据系统的代码构件显示系统代码的整个物理结构</span></p>
+<p><span style="color: rgb(0, 0, 0);"><img src="http://pic1.tianmaying.com/md-image/ae4e5125dcdfc08a8ac256cbb23b213f.png" alt="构建图.png"><br></span></p>
+<h3 id="3-5-2-部署图"><a href="#3-5-2-部署图" class="headerlink" title="3.5.2 部署图"></a>3.5.2 部署图</h3><p>概念：<span style="color: rgb(0, 0, 0);"><span style="color: rgb(0, 0, 0);">系统中硬件的物理体系结构</span></span></p>
+<p>描述方式：</p>
+<ol>
+<li>三维立方体表示部件 </li>
+<li>节点名称位于立方体上部</li>
+</ol>
+<p>目的：<span style="color: rgb(0, 0, 0);"><span style="color: rgb(0, 0, 0);">显示系统的硬件和软件的物理结构</span></span></p>
+<p><span style="color: rgb(0, 0, 0);"><span style="color: rgb(0, 0, 0);"><img src="http://pic1.tianmaying.com/md-image/114df3804dc8d5a3c66101fb6aa743f0.png" alt="部署图.png"><br></span></span></p>
+<font color="#000000">接下来会针对不同的图进行举例说明和详细介绍。</font>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://xixy.github.io/2017/03/10/UML视图及diagram总结/" data-id="cj036a7ns0001vcvv5cm6xm2h" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/03/07/机器学习性能评估指标/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">机器学习性能评估指标</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-C/">C/C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCC/">GCC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/机器学习/">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编译/">编译</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/C-C/" style="font-size: 10px;">C/C++</a> <a href="/tags/GCC/" style="font-size: 10px;">GCC</a> <a href="/tags/机器学习/" style="font-size: 10px;">机器学习</a> <a href="/tags/编译/" style="font-size: 20px;">编译</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/10/UML视图及diagram总结/">UML视图及diagram总结</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/07/机器学习性能评估指标/">机器学习性能评估指标</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/07/GCC工作过程以及动态库静态库链接/">GCC工作过程以及动态库静态库链接</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/07/C-C-头文件相互包含的编译问题/">C/C++头文件相互包含的编译问题</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 习翔宇<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
