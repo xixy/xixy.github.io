@@ -65,6 +65,55 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-elasticsearch-Java-API使用以及坑的注意" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/03/12/elasticsearch-Java-API使用以及坑的注意/" class="article-date">
+  <time datetime="2017-03-12T12:55:53.000Z" itemprop="datePublished">2017-03-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/12/elasticsearch-Java-API使用以及坑的注意/">elasticsearch Java API使用以及坑的注意</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="1-创建client"><a href="#1-创建client" class="headerlink" title="1 创建client"></a>1 创建client</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Settings settings = Settings.builder().put(&quot;cluster.name&quot;, &quot;UBA&quot;).put(&quot;client.transport.sniff&quot;, true)</div><div class="line">    .build();</div><div class="line">TransportClient client = new PreBuiltTransportClient(settings)</div><div class="line">    .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(&quot;127.0.0.1&quot;), 9300));</div></pre></td></tr></table></figure>
+<p>然后就可以愉快的用client来进行索引、检索、删除、批量处理、局部更新等等操作。这里的坑在以下两点：</p>
+<ol>
+<li>9300端口的设置，用RestAPI的时候用的是9200端口，然而这里是9300端口</li>
+<li>Java API的版本问题，最新的5.2及以上版本跟5.2以下版本的API变化很大，建议以官网为准</li>
+</ol>
+<h1 id="2-操作"><a href="#2-操作" class="headerlink" title="2 操作"></a>2 操作</h1><h2 id="2-1-索引操作"><a href="#2-1-索引操作" class="headerlink" title="2.1 索引操作"></a>2.1 索引操作</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Map&lt;String, Object&gt; json = new HashMap&lt;String, Object&gt;();</div><div class="line">json.put(&quot;user&quot;, &quot;kimchy&quot;);</div><div class="line">json.put(&quot;postDate&quot;, new Date());</div><div class="line">json.put(&quot;message&quot;, &quot;trying out Elasticsearch&quot;);</div><div class="line">IndexResponse response = client.prepareIndex(&quot;pkulab&quot;, &quot;stu&quot;).setSource(json).get();</div></pre></td></tr></table></figure>
+<p>这里没什么坑，需要注意的是response的类型不同是IndexResponse类型</p>
+<h2 id="2-2-检索操作"><a href="#2-2-检索操作" class="headerlink" title="2.2 检索操作"></a>2.2 检索操作</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">GetResponse response = client.prepareGet(&quot;pkulab&quot;, &quot;stu&quot;, &quot;AVrBY_Biq_5jx39izzQQ&quot;).get();</div></pre></td></tr></table></figure>
+<h2 id="2-3-删除操作"><a href="#2-3-删除操作" class="headerlink" title="2.3 删除操作"></a>2.3 删除操作</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">DeleteResponse response = client.prepareDelete(&quot;pkulab&quot;, &quot;stu&quot;, &quot;1&quot;).get();</div></pre></td></tr></table></figure>
+<p>其他操作以及注意事项逐渐加。。。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://xixy.github.io/2017/03/12/elasticsearch-Java-API使用以及坑的注意/" data-id="cj06oywo50003bzvvorf8wz5v" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Json格式总结" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/03/12/Json格式总结/" class="article-date">
@@ -147,7 +196,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/03/12/Json格式总结/" data-id="cj069dx3w0003r0vvng61e9re" class="article-share-link">Share</a>
+      <a data-url="http://xixy.github.io/2017/03/12/Json格式总结/" data-id="cj06oywnx0001bzvvdt3acvqe" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JSON/">JSON</a></li></ul>
@@ -260,7 +309,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/03/10/UML视图及diagram总结/" data-id="cj069dx3z0004r0vvnry21md6" class="article-share-link">Share</a>
+      <a data-url="http://xixy.github.io/2017/03/10/UML视图及diagram总结/" data-id="cj06oywo80005bzvvnsl9bgpi" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UML/">UML</a></li></ul>
@@ -356,7 +405,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/03/07/机器学习性能评估指标/" data-id="cj069dx430005r0vv1rfn3i2c" class="article-share-link">Share</a>
+      <a data-url="http://xixy.github.io/2017/03/07/机器学习性能评估指标/" data-id="cj06oywoa0007bzvv97w1leal" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/机器学习/">机器学习</a></li></ul>
@@ -504,7 +553,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/03/07/GCC工作过程以及动态库静态库链接/" data-id="cj069dx3q0001r0vv1echfiti" class="article-share-link">Share</a>
+      <a data-url="http://xixy.github.io/2017/03/07/GCC工作过程以及动态库静态库链接/" data-id="cj06oywo70004bzvvcawb7yzt" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C-C/">C/C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GCC/">GCC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/编译/">编译</a></li></ul>
@@ -558,7 +607,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/03/07/C-C-头文件相互包含的编译问题/" data-id="cj069dx3m0000r0vvw31aukd5" class="article-share-link">Share</a>
+      <a data-url="http://xixy.github.io/2017/03/07/C-C-头文件相互包含的编译问题/" data-id="cj06oywnt0000bzvvt52lussr" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/编译/">编译</a></li></ul>
@@ -582,7 +631,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-C/">C/C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCC/">GCC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSON/">JSON</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UML/">UML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/机器学习/">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编译/">编译</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-C/">C/C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCC/">GCC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSON/">JSON</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UML/">UML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/机器学习/">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编译/">编译</a></li></ul>
     </div>
   </div>
 
@@ -592,7 +641,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/C-C/" style="font-size: 10px;">C/C++</a> <a href="/tags/GCC/" style="font-size: 10px;">GCC</a> <a href="/tags/JSON/" style="font-size: 10px;">JSON</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/机器学习/" style="font-size: 10px;">机器学习</a> <a href="/tags/编译/" style="font-size: 20px;">编译</a>
+      <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/C-C/" style="font-size: 10px;">C/C++</a> <a href="/tags/GCC/" style="font-size: 10px;">GCC</a> <a href="/tags/JSON/" style="font-size: 10px;">JSON</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/elasticsearch/" style="font-size: 10px;">elasticsearch</a> <a href="/tags/机器学习/" style="font-size: 10px;">机器学习</a> <a href="/tags/编译/" style="font-size: 20px;">编译</a>
     </div>
   </div>
 
@@ -614,6 +663,10 @@
       <ul>
         
           <li>
+            <a href="/2017/03/12/elasticsearch-Java-API使用以及坑的注意/">elasticsearch Java API使用以及坑的注意</a>
+          </li>
+        
+          <li>
             <a href="/2017/03/12/Json格式总结/">Json格式总结</a>
           </li>
         
@@ -627,10 +680,6 @@
         
           <li>
             <a href="/2017/03/07/GCC工作过程以及动态库静态库链接/">GCC工作过程以及动态库静态库链接</a>
-          </li>
-        
-          <li>
-            <a href="/2017/03/07/C-C-头文件相互包含的编译问题/">C/C++头文件相互包含的编译问题</a>
           </li>
         
       </ul>

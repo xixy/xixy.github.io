@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>elasticsearch Java API使用以及坑的注意 | 习翔宇</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1 创建client1234Settings settings = Settings.builder().put(&amp;quot;cluster.name&amp;quot;, &amp;quot;UBA&amp;quot;).put(&amp;quot;client.transport.sniff&amp;quot;, true)    .build();TransportClient client = new PreBuiltTrans">
+<meta property="og:type" content="article">
+<meta property="og:title" content="elasticsearch Java API使用以及坑的注意">
+<meta property="og:url" content="http://xixy.github.io/2017/03/12/elasticsearch-Java-API使用以及坑的注意/index.html">
+<meta property="og:site_name" content="习翔宇">
+<meta property="og:description" content="1 创建client1234Settings settings = Settings.builder().put(&amp;quot;cluster.name&amp;quot;, &amp;quot;UBA&amp;quot;).put(&amp;quot;client.transport.sniff&amp;quot;, true)    .build();TransportClient client = new PreBuiltTrans">
+<meta property="og:updated_time" content="2017-03-12T13:04:07.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="elasticsearch Java API使用以及坑的注意">
+<meta name="twitter:description" content="1 创建client1234Settings settings = Settings.builder().put(&amp;quot;cluster.name&amp;quot;, &amp;quot;UBA&amp;quot;).put(&amp;quot;client.transport.sniff&amp;quot;, true)    .build();TransportClient client = new PreBuiltTrans">
+  
+    <link rel="alternate" href="/atom.xml" title="习翔宇" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">习翔宇</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">习翔宇的博客</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://xixy.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-elasticsearch-Java-API使用以及坑的注意" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/03/12/elasticsearch-Java-API使用以及坑的注意/" class="article-date">
+  <time datetime="2017-03-12T12:55:53.000Z" itemprop="datePublished">2017-03-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      elasticsearch Java API使用以及坑的注意
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="1-创建client"><a href="#1-创建client" class="headerlink" title="1 创建client"></a>1 创建client</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Settings settings = Settings.builder().put(&quot;cluster.name&quot;, &quot;UBA&quot;).put(&quot;client.transport.sniff&quot;, true)</div><div class="line">    .build();</div><div class="line">TransportClient client = new PreBuiltTransportClient(settings)</div><div class="line">    .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(&quot;127.0.0.1&quot;), 9300));</div></pre></td></tr></table></figure>
+<p>然后就可以愉快的用client来进行索引、检索、删除、批量处理、局部更新等等操作。这里的坑在以下两点：</p>
+<ol>
+<li>9300端口的设置，用RestAPI的时候用的是9200端口，然而这里是9300端口</li>
+<li>Java API的版本问题，最新的5.2及以上版本跟5.2以下版本的API变化很大，建议以官网为准</li>
+</ol>
+<h1 id="2-操作"><a href="#2-操作" class="headerlink" title="2 操作"></a>2 操作</h1><h2 id="2-1-索引操作"><a href="#2-1-索引操作" class="headerlink" title="2.1 索引操作"></a>2.1 索引操作</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Map&lt;String, Object&gt; json = new HashMap&lt;String, Object&gt;();</div><div class="line">json.put(&quot;user&quot;, &quot;kimchy&quot;);</div><div class="line">json.put(&quot;postDate&quot;, new Date());</div><div class="line">json.put(&quot;message&quot;, &quot;trying out Elasticsearch&quot;);</div><div class="line">IndexResponse response = client.prepareIndex(&quot;pkulab&quot;, &quot;stu&quot;).setSource(json).get();</div></pre></td></tr></table></figure>
+<p>这里没什么坑，需要注意的是response的类型不同是IndexResponse类型</p>
+<h2 id="2-2-检索操作"><a href="#2-2-检索操作" class="headerlink" title="2.2 检索操作"></a>2.2 检索操作</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">GetResponse response = client.prepareGet(&quot;pkulab&quot;, &quot;stu&quot;, &quot;AVrBY_Biq_5jx39izzQQ&quot;).get();</div></pre></td></tr></table></figure>
+<h2 id="2-3-删除操作"><a href="#2-3-删除操作" class="headerlink" title="2.3 删除操作"></a>2.3 删除操作</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">DeleteResponse response = client.prepareDelete(&quot;pkulab&quot;, &quot;stu&quot;, &quot;1&quot;).get();</div></pre></td></tr></table></figure>
+<p>其他操作以及注意事项逐渐加。。。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://xixy.github.io/2017/03/12/elasticsearch-Java-API使用以及坑的注意/" data-id="cj06oywo50003bzvvorf8wz5v" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/03/12/Json格式总结/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Json格式总结</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-C/">C/C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCC/">GCC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSON/">JSON</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UML/">UML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/机器学习/">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编译/">编译</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/C-C/" style="font-size: 10px;">C/C++</a> <a href="/tags/GCC/" style="font-size: 10px;">GCC</a> <a href="/tags/JSON/" style="font-size: 10px;">JSON</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/elasticsearch/" style="font-size: 10px;">elasticsearch</a> <a href="/tags/机器学习/" style="font-size: 10px;">机器学习</a> <a href="/tags/编译/" style="font-size: 20px;">编译</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/12/elasticsearch-Java-API使用以及坑的注意/">elasticsearch Java API使用以及坑的注意</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/12/Json格式总结/">Json格式总结</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/10/UML视图及diagram总结/">UML视图及diagram总结</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/07/机器学习性能评估指标/">机器学习性能评估指标</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/07/GCC工作过程以及动态库静态库链接/">GCC工作过程以及动态库静态库链接</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 习翔宇<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
