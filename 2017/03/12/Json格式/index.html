@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Json格式 | 习翔宇</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="JSON(JavaScript Object Notation) 是一种轻量级的数据交换格式。JSON采用完全独立于语言的文本格式，这些特性使JSON成为理想的数据交换语言。易于人阅读和编写，同时也易于机器解析和生成。
+基础结构
+JSON建构于两种结构： 
+
+“名称/值”对的集合（A collection of name/value pairs）。不同的语言中，它被理解为对象（object），记录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Json格式">
+<meta property="og:url" content="http://xixy.github.io/2017/03/12/Json格式/index.html">
+<meta property="og:site_name" content="习翔宇">
+<meta property="og:description" content="JSON(JavaScript Object Notation) 是一种轻量级的数据交换格式。JSON采用完全独立于语言的文本格式，这些特性使JSON成为理想的数据交换语言。易于人阅读和编写，同时也易于机器解析和生成。
+基础结构
+JSON建构于两种结构： 
+
+“名称/值”对的集合（A collection of name/value pairs）。不同的语言中，它被理解为对象（object），记录">
+<meta property="og:updated_time" content="2017-03-12T05:28:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Json格式">
+<meta name="twitter:description" content="JSON(JavaScript Object Notation) 是一种轻量级的数据交换格式。JSON采用完全独立于语言的文本格式，这些特性使JSON成为理想的数据交换语言。易于人阅读和编写，同时也易于机器解析和生成。
+基础结构
+JSON建构于两种结构： 
+
+“名称/值”对的集合（A collection of name/value pairs）。不同的语言中，它被理解为对象（object），记录">
+  
+    <link rel="alternate" href="/atom.xml" title="习翔宇" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">习翔宇</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">习翔宇的博客</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://xixy.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Json格式" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/03/12/Json格式/" class="article-date">
+  <time datetime="2017-03-12T05:28:09.000Z" itemprop="datePublished">2017-03-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Json格式
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <pre><code>JSON(JavaScript Object Notation) 是一种轻量级的数据交换格式。JSON采用完全独立于语言的文本格式，这些特性使JSON成为理想的数据交换语言。易于人阅读和编写，同时也易于机器解析和生成。
+</code></pre><p>基础结构</p>
+<p>JSON建构于两种结构： </p>
+<ol>
+<li><p>“名称/值”对的集合（A collection of name/value pairs）。不同的语言中，它被理解为对象（object），记录（record），结构（struct），字典（dictionary），哈希表（hash table），有键列表（keyed list），或者关联数组 （associative array）。 </p>
+</li>
+<li><p>值的有序列表（An ordered list of values）。在大部分语言中，它被理解为数组（array）。 </p>
+</li>
+</ol>
+<p>基础示例</p>
+<p>简单地说，JSON 可以将 JavaScript 对象中表示的一组数据转换为字符串，然后就可以在函数之间轻松地传递这个字符串，或者在异步应用程序中将字符串从 Web 客户机传递给服务器端程序。这个字符串看起来有点儿古怪，但是 JavaScript 很容易解释它，而且 JSON 可以表示比”名称 / 值对”更复杂的结构。例如，可以表示数组和复杂的对象，而不仅仅是键和值的简单列表。<br>表示名称 / 值对</p>
+<p>按照最简单的形式，可以用下面这样的 JSON 表示 “名称 / 值对” ：{ “firstName”: “Brett” }<br>这个示例非常基本，而且实际上比等效的纯文本 “名称 / 值对” 占用更多的空间：firstName=Brett </p>
+<p>但是，当将多个”名称 / 值对”串在一起时，JSON 就会体现出它的价值了。首先，可以创建包含多个”名称 / 值对”的 记录，比如： </p>
+<p>{ “firstName”: “Brett”, “lastName”:”McLaughlin”, “email”: “aaaa” } </p>
+<p>从语法方面来看，这与”名称 / 值对”相比并没有很大的优势，但是在这种情况下 JSON 更容易使用，而且可读性更好。例如，它明确地表示以上三个值都是同一记录的一部分；花括号使这些值有了某种联系。 </p>
+<p>表示数组</p>
+<p>当需要表示一组值时，JSON 不但能够提高可读性，而且可以减少复杂性。例如，假设您希望表示一个人名列表。在 XML 中，需要许多开始标记和结束标记；如果使用典型的 名称 / 值 对（就像在本系列前面文章中看到的那种名称 / 值对），那么必须建立一种专有的数据格式，或者将键名称修改为 person1-firstName这样的形式。<br>如果使用 JSON，就只需将多个带花括号的记录分组在一起： </p>
+<p>{ “people”: [ </p>
+<p>{ “firstName”: “Brett”, “lastName”:”McLaughlin”, “email”: “aaaa” }, </p>
+<p>{ “firstName”: “Jason”, “lastName”:”Hunter”, “email”: “bbbb”}, </p>
+<p>{ “firstName”: “Elliotte”, “lastName”:”Harold”, “email”: “cccc” } </p>
+<p>]} </p>
+<p>这不难理解。在这个示例中，只有一个名为 people的变量，值是包含三个条目的数组，每个条目是一个人的记录，其中包含名、姓和电子邮件地址。上面的示例演示如何用括号将记录组合成一个值。当然，可以使用相同的语法表示多个值（每个值包含多个记录）： </p>
+<p>{ “programmers”: [ </p>
+<p>{ “firstName”: “Brett”, “lastName”:”McLaughlin”, “email”: “aaaa” }, </p>
+<p>{ “firstName”: “Jason”, “lastName”:”Hunter”, “email”: “bbbb” }, </p>
+<p>{ “firstName”: “Elliotte”, “lastName”:”Harold”, “email”: “cccc” } </p>
+<p>], </p>
+<p>“authors”: [ </p>
+<p>{ “firstName”: “Isaac”, “lastName”: “Asimov”, “genre”: “science fiction” }, </p>
+<p>{ “firstName”: “Tad”, “lastName”: “Williams”, “genre”: “fantasy” }, </p>
+<p>{ “firstName”: “Frank”, “lastName”: “Peretti”, “genre”: “christian fiction” } </p>
+<p>], </p>
+<p>“musicians”: [ </p>
+<p>{ “firstName”: “Eric”, “lastName”: “Clapton”, “instrument”: “guitar” }, </p>
+<p>{ “firstName”: “Sergei”, “lastName”: “Rachmaninoff”, “instrument”: “piano” } </p>
+<p>] } </p>
+<p>这里最值得注意的是，能够表示多个值，每个值进而包含多个值。但是还应该注意，在不同的主条目（programmers、authors 和 musicians）之间，记录中实际的名称 / 值对可以不一样。JSON 是完全动态的，允许在 JSON 结构的中间改变表示数据的方式。 </p>
+<p>在处理 JSON 格式的数据时，没有需要遵守的预定义的约束。所以，在同样的数据结构中，可以改变表示数据的方式，甚至可以以不同方式表示同一事物。</p>
+<p>格式应用</p>
+<p>掌握了 JSON 格式之后，在 JavaScript 中使用它就很简单了。JSON 是 JavaScript 原生格式，这意味着在 JavaScript 中处理 JSON 数据不需要任何特殊的 API 或工具包。<br>将 JSON 数据赋值给变量</p>
+<p>例如，可以创建一个新的 JavaScript 变量，然后将 JSON 格式的数据字符串直接赋值给它：<br>var people = { “programmers”: [ { “firstName”: “Brett”, “lastName”:”McLaughlin”, “email”: “aaaa” }, </p>
+<p>{ “firstName”: “Jason”, “lastName”:”Hunter”, “email”: “bbbb” }, </p>
+<p>{ “firstName”: “Elliotte”, “lastName”:”Harold”, “email”: “cccc” } </p>
+<p>], </p>
+<p>“authors”: [ </p>
+<p>{ “firstName”: “Isaac”, “lastName”: “Asimov”, “genre”: “science fiction” }, </p>
+<p>{ “firstName”: “Tad”, “lastName”: “Williams”, “genre”: “fantasy” }, </p>
+<p>{ “firstName”: “Frank”, “lastName”: “Peretti”, “genre”: “christian fiction” } </p>
+<p>], </p>
+<p>“musicians”: [ </p>
+<p>{ “firstName”: “Eric”, “lastName”: “Clapton”, “instrument”: “guitar” }, </p>
+<p>{ “firstName”: “Sergei”, “lastName”: “Rachmaninoff”, “instrument”: “piano” } </p>
+<p>] } </p>
+<p>这非常简单；现在 people包含前面看到的 JSON 格式的数据。但是，这还不够，因为访问数据的方式似乎还不明显。</p>
+<p>访问数据</p>
+<p>尽管看起来不明显，但是上面的长字符串实际上只是一个数组；将这个数组放进 JavaScript 变量之后，就可以很轻松地访问它。实际上，只需用点号表示法来表示数组元素。所以，要想访问 programmers 列表的第一个条目的姓氏，只需在 JavaScript 中使用下面这样的代码：<br>people.programmers[0].lastName; </p>
+<p>注意，数组索引是从零开始的。所以，这行代码首先访问 people变量中的数据；然后移动到称为 programmers的条目，再移动到第一个记录（[0]）；最后，访问 lastName键的值。结果是字符串值 “McLaughlin”。 </p>
+<p>下面是使用同一变量的几个示例。 </p>
+<p>people.authors[1].genre // Value is “fantasy” </p>
+<p>people.musicians[3].lastName // Undefined. This refers to the fourth entry, and there isn’t one </p>
+<p>people.programmers[2].firstName // Value is “Elliotte” </p>
+<p>利用这样的语法，可以处理任何 JSON 格式的数据，而不需要使用任何额外的 JavaScript 工具包或 API。</p>
+<p>修改 JSON 数据</p>
+<p>正如可以用点号和括号访问数据，也可以按照同样的方式轻松地修改数据：<br>people.musicians[1].lastName = “Rachmaninov”; </p>
+<p>在将字符串转换为 JavaScript 对象之后，就可以像这样修改变量中的数据。 </p>
+<p>转换回字符串</p>
+<p>当然，如果不能轻松地将对象转换回本文提到的文本格式，那么所有数据修改都没有太大的价值。在 JavaScript 中这种转换也很简单：<br>String newJSONtext = people.toJSONString(); </p>
+<p>这样就行了！现在就获得了一个可以在任何地方使用的文本字符串，例如，可以将它用作 Ajax 应用程序中的请求字符串。 </p>
+<p>更重要的是，可以将任何JavaScript 对象转换为 JSON 文本。并非只能处理原来用 JSON 字符串赋值的变量。为了对名为 myObject的对象进行转换，只需执行相同形式的命令： </p>
+<p>String myObjectInJSON = myObject.toJSONString(); </p>
+<p>这就是 JSON 与本系列讨论的其他数据格式之间最大的差异。如果使用 JSON，只需调用一个简单的函数，就可以获得经过格式化的数据，可以直接使用了。对于其他数据格式，需要在原始数据和格式化数据之间进行转换。即使使用 Document Object Model 这样的 API（提供了将自己的数据结构转换为文本的函数），也需要学习这个 API 并使用 API 的对象，而不是使用原生的 JavaScript 对象和语法。 </p>
+<p>最终结论是，如果要处理大量 JavaScript 对象，那么 JSON 几乎肯定是一个好选择，这样就可以轻松地将数据转换为可以在请求中发送给服务器端程序的格式。</p>
+<p>概念比较</p>
+<p>JSON和XML的比较</p>
+<p>◆可读性</p>
+<p>JSON和XML的可读性可谓不相上下，一边是简易的语法，一边是规范的标签形式，很难分出胜负。 </p>
+<p>◆可扩展性</p>
+<p>XML天生有很好的扩展性，JSON当然也有，没有什么是XML能扩展，而JSON却不能。不过JSON在Javascript主场作战，可以存储Javascript复合对象，有着xml不可比拟的优势。 </p>
+<p>◆编码难度</p>
+<p>XML有丰富的编码工具，比如Dom4j、JDom等，JSON也有提供的工具。无工具的情况下，相信熟练的开发人员一样能很快的写出想要的xml文档和JSON字符串，不过，xml文档要多很多结构上的字符。 </p>
+<p>◆解码难度</p>
+<p>XML的解析方式有两种： </p>
+<p>一是通过文档模型解析，也就是通过父标签索引出一组标记。例如：xmlData.getElementsByTagName(“tagName”)，但是这样是要在预先知道文档结构的情况下使用，无法进行通用的封装。 </p>
+<p>另外一种方法是遍历节点（document 以及 childNodes）。这个可以通过递归来实现，不过解析出来的数据仍旧是形式各异，往往也不能满足预先的要求。 </p>
+<p>凡是这样可扩展的结构数据解析起来一定都很困难。 </p>
+<p>JSON也同样如此。如果预先知道JSON结构的情况下，使用JSON进行数据传递简直是太美妙了，可以写出很实用美观可读性强的代码。如果你是纯粹的前台开发人员，一定会非常喜欢JSON。但是如果你是一个应用开发人员，就不是那么喜欢了，毕竟xml才是真正的结构化标记语言，用于进行数据传递。 </p>
+<p>而如果不知道JSON的结构而去解析JSON的话，那简直是噩梦。费时费力不说，代码也会变得冗余拖沓，得到的结果也不尽人意。但是这样也不影响众多前台开发人员选择JSON。因为json.js中的toJSONString()就可以看到JSON的字符串结构。当然不是使用这个字符串，这样仍旧是噩梦。常用JSON的人看到这个字符串之后，就对JSON的结构很明了了，就更容易的操作JSON。 </p>
+<p>以上是在Javascript中仅对于数据传递的xml与JSON的解析。在Javascript地盘内，JSON毕竟是主场作战，其优势当然要远远优越于xml。如果JSON中存储Javascript复合对象，而且不知道其结构的话，我相信很多程序员也一样是哭着解析JSON的。</p>
+<p>◆实例比较</p>
+<p>XML和JSON都使用结构化方法来标记数据，下面来做一个简单的比较。</p>
+<p>用XML表示中国部分省市数据如下： </p>
+<p>&lt;?xml version=”1.0” encoding=”utf-8”?&gt; </p>
+<country><br><br>    <name>中国</name><br><br>    <province><br><br>        <name>黑龙江</name><br><br>     <cities><br><br>            <city>哈尔滨</city><br><br>            <city>大庆</city><br><br>        </cities><br><br>    </province><br><br>    <province><br><br>        <name>广东</name><br><br>        <cities><br><br>            <city>广州</city><br><br>            <city>深圳</city><br><br>            <city>珠海</city><br><br>        </cities><br><br>    </province><br><br></country> 
+
+<p>用JSON表示如下： </p>
+<p>{ </p>
+<p>{name:”中国”, province:[ { name:”黑龙江”, cities:{ city:[“哈尔滨”,”大庆”] }, </p>
+<p>{name:”广东”, cities:{ city:[“广州”,”深圳”,”珠海”] }  </p>
+<p>} </p>
+<p>编码的可读性，xml有明显的优势，毕竟人类的语言更贴近这样的说明结构。json读起来更像一个数据块，读起来就比较费解了。不过，我们读起来费解的语言，恰恰是适合机器阅读，所以通过json的索引.province[0].name就能够读取“黑龙江”这个值。 </p>
+<p>编码的手写难度来说，xml还是舒服一些，好读当然就好写。不过写出来的字符JSON就明显少很多。去掉空白制表以及换行的话，JSON就是密密麻麻的有用数据，而xml却包含很多重复的标记字符。</p>
+<p>JSON在线校验工具</p>
+<p>前言</p>
+<p>JSON格式取代了xml给网络传输带来了很大的便利,但是却没有了xml的一目了然,尤其是json数据很长的时候,我们会陷入繁琐复杂的数据节点查找中。<br>但是国人的一款在线工具 BeJson 给众多程序员带来了一阵凉风。 </p>
+<p>功能简介</p>
+<ol>
+<li><p>JSON格式化校验<br>很多人在得到JSON数据后,一时没有办法判断JSON数据格式是否正确,是否少或多符号而导致程序不能解析,这个功能正好能帮助大家来完成JSON格式的校验。 </p>
+</li>
+<li><p>JSON视图</p>
+</li>
+</ol>
+<p>想必很多程序员都会遇到当找一个节点的时候,会发现如果直接对着一行行数据无从下手,就算知道哪个位置,还要一个节点一个节点的往下找,万一一不留神又得从头开始找的麻烦事。 </p>
+<p>有了这个功能,一切JSON数据都会变成视图格式,一目了然,什么对象下有多少数组,一个数组下有多少对象。 </p>
+<p>这个功能非常实用。不光有视图功能还有格式化、压缩、转义、校验功能。总之很强大。 </p>
+<ol>
+<li>压缩转义</li>
+</ol>
+<p>程序员在写JSON语句测试用例的时候,很多时候为了方便直接写了个JSON字符串做测试,但是又陷入了无止境的双引号转义的麻烦中。这款功能集压缩、转义于一身,让你在写测试用例的时候,如鱼得水。 </p>
+<ol>
+<li>JSON在线编辑器</li>
+</ol>
+<p>如果你现在的电脑刚巧没有装你所熟悉的编辑器,如果你想针对拿到的JSON数据的某个节点做数据修改时,这个功能可以满足你的需求。 </p>
+<ol>
+<li>在线发送JSON数据</li>
+</ol>
+<p>大家都知道,JSON用的最多的还是web项目的开发,那你要测试一个接口是否能准确的接受JSON数据,那你就得写一个页面发送JSON字符串,重复的做着这件事。随着这个功能的横空出世,你可以摆脱写测试页面了,因为这个功能可以将指定的JSON数据发送指定的url,方便吧。 </p>
+<ol>
+<li>JSON着色</li>
+</ol>
+<p>很多人在写文档时，总希望文档能一目了然,但是面对着白底黑字的JSON数据总是提不起精神没关系,使用这个功能,所有的关键字都会被着色,数据结构一目了然。 </p>
+<ol>
+<li>JSON-XML互转</li>
+</ol>
+<p>顾名思义，将JSON格式的数据转化成XML格式、或者XML格式的数据转化成JSON格式，一切都不是问题。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://xixy.github.io/2017/03/12/Json格式/" data-id="cj068owsh0003mxvv39y344vg" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/03/10/UML视图及diagram总结/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">UML视图及diagram总结</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-C/">C/C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCC/">GCC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UML/">UML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/机器学习/">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编译/">编译</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/C-C/" style="font-size: 10px;">C/C++</a> <a href="/tags/GCC/" style="font-size: 10px;">GCC</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/机器学习/" style="font-size: 10px;">机器学习</a> <a href="/tags/编译/" style="font-size: 20px;">编译</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/12/Json格式/">Json格式</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/10/UML视图及diagram总结/">UML视图及diagram总结</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/07/机器学习性能评估指标/">机器学习性能评估指标</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/07/GCC工作过程以及动态库静态库链接/">GCC工作过程以及动态库静态库链接</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/07/C-C-头文件相互包含的编译问题/">C/C++头文件相互包含的编译问题</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 习翔宇<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
