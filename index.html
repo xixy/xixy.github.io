@@ -65,6 +65,70 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-JUnit多测试用例的执行顺序问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/03/21/JUnit多测试用例的执行顺序问题/" class="article-date">
+  <time datetime="2017-03-21T12:37:14.000Z" itemprop="datePublished">2017-03-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/21/JUnit多测试用例的执行顺序问题/">JUnit多测试用例的执行顺序问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1 介绍"></a>1 介绍</h1><p>在写JUnit测试用例时，有时候需要按照定义顺序执行我们的单元测试方法，比如如在测试数据库相关的用例时候要按照测试插入、查询、删除的顺序测试。如果不按照这个顺序测试可能会出现问题，比如删除方法在前面执行，后面的方法就都不能通过测试，因为数据已经被清空了。而JUnit测试时默认的顺序是随机的。所以这时就需要有办法要求JUnit在执行测试方法时按照我们指定的顺序来执行。</p>
+<p>JUnit是通过<code>@FixMethodOrder</code>注解(annotation)来控制测试方法的执行顺序的。<code>@FixMethodOrder</code>注解的参数是<code>org.junit.runners.MethodSorters</code>对象,在枚举类<code>org.junit.runners.MethodSorters</code>中定义了如下三种顺序类型：</p>
+<ul>
+<li>MethodSorters.JVM</li>
+</ul>
+<blockquote>
+<p>Leaves the test methods in the order returned by the JVM. Note that the order from the JVM may vary from run to run (按照JVM得到的方法顺序，也就是代码中定义的方法顺序)</p>
+</blockquote>
+<ul>
+<li>MethodSorters.DEFAULT</li>
+</ul>
+<blockquote>
+<p>Sorts the test methods in a deterministic, but not predictable, order() (以确定但不可预期的顺序执行)</p>
+</blockquote>
+<ul>
+<li>MethodSorters.NAME_ASCENDING</li>
+</ul>
+<blockquote>
+<p>Sorts the test methods by the method name, in lexicographic order, with Method.toString() used as a tiebreaker (按方法名字母顺序执行)</p>
+</blockquote>
+<h1 id="2-测试"><a href="#2-测试" class="headerlink" title="2 测试"></a>2 测试</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">package test;</div><div class="line"></div><div class="line">import org.junit.Assert;</div><div class="line">import org.junit.FixMethodOrder;</div><div class="line">import org.junit.runners.MethodSorters;</div><div class="line">import org.junit.Test;</div><div class="line">import org.slf4j.Logger;</div><div class="line">import org.slf4j.LoggerFactory;</div><div class="line">@FixMethodOrder(MethodSorters.JVM)//指定测试方法按定义的顺序执行  </div><div class="line">public class TestJNI &#123;</div><div class="line">    private static final Logger logger = LoggerFactory.getLogger(TestJNI.class);</div><div class="line">    @Test</div><div class="line">    public void testAddAndGet()&#123;</div><div class="line">        logger.info(&quot;test &apos;addBean&apos; and &apos;getBean&apos; &quot;);       </div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Test</div><div class="line">    public final void testSearch() &#123;</div><div class="line">        logger.info(&quot;test search CODE from JNI memory...&quot;);</div><div class="line">    &#125;</div><div class="line">    @Test</div><div class="line">    public final void testRemove() &#123;</div><div class="line">        logger.info(&quot;test remove CODE from JNI memory...&quot;);     </div><div class="line">    &#125;   </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果<code>@FixMethodOrder</code>定义为<code>MethodSorters.DEFAULT</code>或去掉代码中的@FixMethodOrder注解,那么测试用便执行的顺序是</p>
+<p><img src="http://pic1.tianmaying.com/md-image/b58448b0ade0dcdb46cd6954ad59fa00.jpeg" alt="1.jpg"></p>
+<p>这并不是我要的结果，<code>testRemove</code>如果先执行了，<code>testSearch</code>肯定什么也找不到。</p>
+<p>如果改成<code>@FixMethodOrder(MethodSorters.JVM)</code>，则这个执行顺序才是我想要的顺序。</p>
+<p><img src="http://pic1.tianmaying.com/md-image/2b60247b1441b0cf5af9f8fcec289d1d.jpeg" alt="2.jpg"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://xixy.github.io/2017/03/21/JUnit多测试用例的执行顺序问题/" data-id="cj0jj9l7h00009fvvf67lbv6i" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-elasticsearch-Java-API使用以及坑的注意" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/03/12/elasticsearch-Java-API使用以及坑的注意/" class="article-date">
@@ -102,7 +166,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/03/12/elasticsearch-Java-API使用以及坑的注意/" data-id="cj06oywo50003bzvvorf8wz5v" class="article-share-link">Share</a>
+      <a data-url="http://xixy.github.io/2017/03/12/elasticsearch-Java-API使用以及坑的注意/" data-id="cj0jj9l7x00089fvvoklpku6q" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li></ul>
@@ -196,7 +260,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/03/12/Json格式总结/" data-id="cj06oywnx0001bzvvdt3acvqe" class="article-share-link">Share</a>
+      <a data-url="http://xixy.github.io/2017/03/12/Json格式总结/" data-id="cj0jj9l7u00059fvvjafcmb2x" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JSON/">JSON</a></li></ul>
@@ -309,7 +373,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/03/10/UML视图及diagram总结/" data-id="cj06oywo80005bzvvnsl9bgpi" class="article-share-link">Share</a>
+      <a data-url="http://xixy.github.io/2017/03/10/UML视图及diagram总结/" data-id="cj0jj9l7s00049fvvv5xlqu4q" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UML/">UML</a></li></ul>
@@ -405,7 +469,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/03/07/机器学习性能评估指标/" data-id="cj06oywoa0007bzvv97w1leal" class="article-share-link">Share</a>
+      <a data-url="http://xixy.github.io/2017/03/07/机器学习性能评估指标/" data-id="cj0jj9l7y00099fvvivw09snf" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/机器学习/">机器学习</a></li></ul>
@@ -553,7 +617,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/03/07/GCC工作过程以及动态库静态库链接/" data-id="cj06oywo70004bzvvcawb7yzt" class="article-share-link">Share</a>
+      <a data-url="http://xixy.github.io/2017/03/07/GCC工作过程以及动态库静态库链接/" data-id="cj0jj9l7q00039fvvkn6x8wwz" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C-C/">C/C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GCC/">GCC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/编译/">编译</a></li></ul>
@@ -607,7 +671,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/03/07/C-C-头文件相互包含的编译问题/" data-id="cj06oywnt0000bzvvt52lussr" class="article-share-link">Share</a>
+      <a data-url="http://xixy.github.io/2017/03/07/C-C-头文件相互包含的编译问题/" data-id="cj0jj9l7l00019fvv3kaghnnr" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/编译/">编译</a></li></ul>
@@ -641,7 +705,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/C-C/" style="font-size: 10px;">C/C++</a> <a href="/tags/GCC/" style="font-size: 10px;">GCC</a> <a href="/tags/JSON/" style="font-size: 10px;">JSON</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/elasticsearch/" style="font-size: 10px;">elasticsearch</a> <a href="/tags/机器学习/" style="font-size: 10px;">机器学习</a> <a href="/tags/编译/" style="font-size: 20px;">编译</a>
+      <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/C-C/" style="font-size: 10px;">C/C++</a> <a href="/tags/GCC/" style="font-size: 10px;">GCC</a> <a href="/tags/JSON/" style="font-size: 10px;">JSON</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/elasticsearch/" style="font-size: 10px;">elasticsearch</a> <a href="/tags/机器学习/" style="font-size: 10px;">机器学习</a> <a href="/tags/编译/" style="font-size: 20px;">编译</a>
     </div>
   </div>
 
@@ -663,6 +727,10 @@
       <ul>
         
           <li>
+            <a href="/2017/03/21/JUnit多测试用例的执行顺序问题/">JUnit多测试用例的执行顺序问题</a>
+          </li>
+        
+          <li>
             <a href="/2017/03/12/elasticsearch-Java-API使用以及坑的注意/">elasticsearch Java API使用以及坑的注意</a>
           </li>
         
@@ -676,10 +744,6 @@
         
           <li>
             <a href="/2017/03/07/机器学习性能评估指标/">机器学习性能评估指标</a>
-          </li>
-        
-          <li>
-            <a href="/2017/03/07/GCC工作过程以及动态库静态库链接/">GCC工作过程以及动态库静态库链接</a>
           </li>
         
       </ul>
