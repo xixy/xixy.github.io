@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>序列化与反序列化 | 习翔宇</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1 序列化与反序列化1.1 概念序列化和反序列化，我们可能经常会听到，其实通俗一点的解释，序列化就是把一个对象保存到一个文件或数据库字段中去，反序列化就是在适当的时候把这个文件再转化成原来的对象使用。当两个进程在进行远程通信时，彼此可以发送各种类型的数据。无论是何种类型的数据，都会以二进制序列的形式在网络上传送。发送方需要把这个对象转换为字节序列，才能在网络上传送；接收方则需要把字节序列再恢复为对">
+<meta property="og:type" content="article">
+<meta property="og:title" content="序列化与反序列化">
+<meta property="og:url" content="http://xixy.github.io/2017/03/28/序列化与反序列化/index.html">
+<meta property="og:site_name" content="习翔宇">
+<meta property="og:description" content="1 序列化与反序列化1.1 概念序列化和反序列化，我们可能经常会听到，其实通俗一点的解释，序列化就是把一个对象保存到一个文件或数据库字段中去，反序列化就是在适当的时候把这个文件再转化成原来的对象使用。当两个进程在进行远程通信时，彼此可以发送各种类型的数据。无论是何种类型的数据，都会以二进制序列的形式在网络上传送。发送方需要把这个对象转换为字节序列，才能在网络上传送；接收方则需要把字节序列再恢复为对">
+<meta property="og:updated_time" content="2017-03-28T10:45:31.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="序列化与反序列化">
+<meta name="twitter:description" content="1 序列化与反序列化1.1 概念序列化和反序列化，我们可能经常会听到，其实通俗一点的解释，序列化就是把一个对象保存到一个文件或数据库字段中去，反序列化就是在适当的时候把这个文件再转化成原来的对象使用。当两个进程在进行远程通信时，彼此可以发送各种类型的数据。无论是何种类型的数据，都会以二进制序列的形式在网络上传送。发送方需要把这个对象转换为字节序列，才能在网络上传送；接收方则需要把字节序列再恢复为对">
+  
+    <link rel="alternate" href="/atom.xml" title="习翔宇" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">习翔宇</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">习翔宇的博客</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://xixy.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-序列化与反序列化" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/03/28/序列化与反序列化/" class="article-date">
+  <time datetime="2017-03-28T10:44:47.000Z" itemprop="datePublished">2017-03-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      序列化与反序列化
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="1-序列化与反序列化"><a href="#1-序列化与反序列化" class="headerlink" title="1 序列化与反序列化"></a>1 序列化与反序列化</h1><h1 id="1-1-概念"><a href="#1-1-概念" class="headerlink" title="1.1 概念"></a>1.1 概念</h1><p>序列化和反序列化，我们可能经常会听到，其实通俗一点的解释，序列化就是把一个对象保存到一个文件或数据库字段中去，反序列化就是在适当的时候把这个文件再转化成原来的对象使用。当两个进程在进行远程通信时，彼此可以发送各种类型的数据。无论是何种类型的数据，都会以二进制序列的形式在网络上传送。发送方需要把这个对象转换为字节序列，才能在网络上传送；接收方则需要把字节序列再恢复为对象。</p>
+<p>把对象转换为字节序列的过程称为对象的序列化。把字节序列恢复为对象的过程称为对象的反序列化。</p>
+<h2 id="1-2-用途"><a href="#1-2-用途" class="headerlink" title="1.2 用途"></a>1.2 用途</h2><p>对象的序列化主要有两种用途</p>
+<ol>
+<li>把对象的字节序列永久地保存到硬盘上，通常存放在一个文件中；我们经常需要将对象的字段值保存到磁盘中，并在以后检索此数据。尽管不使用序列化也能完成这项工作，但这种方法通常很繁琐而且容易出错，并且在需要跟踪对象的层次结构时，会变得越来越复杂。可以想象一下编写包含大量对象的大型业务应用程序的情形，程序员不得不为每一个对象编写代码，以便将字段和属性保存至磁盘以及从磁盘还原这些字段和属性。序列化提供了轻松实现这个目标的快捷方法。公共语言运行时 (CLR) 管理对象在内存中的分布，.NET 框架则通过使用反射提供自动的序列化机制。对象序列化后，类的名称、程序集以及类实例的所有数据成员均被写入存储媒体中。对象通常用成员变量来存储对其他实例的引用。类序列化后，序列化引擎将跟踪所有已序列化的引用对象，以确保同一对象不被序列化多次。.NET 框架所提供的序列化体系结构可以自动正确处理对象图表和循环引用。对对象图表的唯一要求是，由正在进行序列化的对象所引用的所有对象都必须标记为 Serializable（请参阅基 本序列化）。否则，当序列化程序试图序列化未标记的对象时将会出现异常。当反序列化已序列化的类时，将重新创建该类，并自动还原所有数据成员的值。</li>
+<li>在网络上传送对象的字节序列。对象仅在创建对象的应用程序域中有效。除非对象是从MarshalByRefObject派生得到或标记为 Serializable，否则，任何将对象作为参数传递或将其作为结果返回的尝试都将失败。如果对象标记为 Serializable，则该对象将被自动序列化，并从一个应用程序域传输至另一个应用程序域，然后进行反序列化，从而在第二个应用程序域中产生出该对象的一个精确副本。此过程通常称为按值封送。如果对象是从MarshalByRefObject派生得到，则从一个应用程序域传递至另一个应用程序域的是对象引用，而不是对象本身。也可以将从MarshalByRefObject派生得到的对象标记为Serializable。远程使用此对象时，负责进行序列化并已预先配置为SurrogateSelector的格式化程序将控制序列化过程，并用一个代理替换所有从MarshalByRefObject派生得到的对象。如果没有预先配置为SurrogateSelector，序列化体系结构将遵从下面的标准序列化规则.</li>
+</ol>
+<p>序列化与反序列化的主要作用是</p>
+<ol>
+<li>在进程下次启动时读取上次保存的对象的信息</li>
+<li>在不同的AppDomain或进程之间传递数据</li>
+<li>在分布式应用系统中传递数据</li>
+</ol>
+<h2 id="1-3-序列化方法"><a href="#1-3-序列化方法" class="headerlink" title="1.3 序列化方法"></a>1.3 序列化方法</h2><ol>
+<li>BinaryFormatter</li>
+<li>SoapFormatter</li>
+<li>XML序列化</li>
+</ol>
+<h1 id="2-示例"><a href="#2-示例" class="headerlink" title="2 示例"></a>2 示例</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public class Data implements Serializable &#123;</div><div class="line">    private static final long serialVersionUID = 7247714666080613254L;</div><div class="line">    public int n;</div><div class="line">    public Data(int n) &#123;</div><div class="line">        this.n = n;</div><div class="line">    &#125;</div><div class="line">    public String toString()&#123;</div><div class="line">        return Integer.toString(n);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @author xixy10@foxmail.com</div><div class="line"> * @version V0.1 2017年3月28日 下午6:12:47</div><div class="line"> */</div><div class="line">package net.xixy;</div><div class="line"></div><div class="line">import java.io.Serializable;</div><div class="line">import java.util.Random;</div><div class="line"></div><div class="line">/**</div><div class="line"> *</div><div class="line"> */</div><div class="line">public class Worm implements Serializable &#123;</div><div class="line">	private static final long serialVersionUID = 5468335797443850679L;</div><div class="line">	private Data[] d = &#123; new Data(random.nextInt(10)), new Data(random.nextInt(10)), new Data(random.nextInt(10)) &#125;;</div><div class="line">	private static Random random = new Random(47);</div><div class="line">	private Worm next;</div><div class="line">	private char c;</div><div class="line"></div><div class="line">	public Worm(int i, char x) &#123;</div><div class="line">		System.out.println(&quot;Worm constructor:&quot; + i);</div><div class="line">		c = x;</div><div class="line">		if (--i &gt; 0) &#123;</div><div class="line">			next = new Worm(i, (char) (x + 1));</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public Worm() &#123;</div><div class="line">		System.out.println(&quot;Default constructor!&quot;);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public String toString() &#123;</div><div class="line">		StringBuilder sb = new StringBuilder(&quot;:&quot;);</div><div class="line">		sb.append(c);</div><div class="line">		sb.append(&quot;(&quot;);</div><div class="line">		for (Data data : d) &#123;</div><div class="line">			sb.append(data);</div><div class="line">		&#125;</div><div class="line">		sb.append(&quot;)&quot;);</div><div class="line">		if (next != null) &#123;</div><div class="line">			sb.append(next);</div><div class="line">		&#125;</div><div class="line">		return sb.toString();</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>下面进行序列化与反序列化的过程</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @author xixy10@foxmail.com</div><div class="line"> * @version V0.1 2017年3月28日 下午6:13:23</div><div class="line"> */</div><div class="line">package net.xixy;</div><div class="line"></div><div class="line">import java.io.ByteArrayInputStream;</div><div class="line">import java.io.ByteArrayOutputStream;</div><div class="line">import java.io.FileInputStream;</div><div class="line">import java.io.FileNotFoundException;</div><div class="line">import java.io.FileOutputStream;</div><div class="line">import java.io.IOException;</div><div class="line">import java.io.ObjectInputStream;</div><div class="line">import java.io.ObjectOutputStream;</div><div class="line"></div><div class="line">/**</div><div class="line"> *</div><div class="line"> */</div><div class="line">public class SerializableTest &#123;</div><div class="line"></div><div class="line">	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException &#123;</div><div class="line">		Worm w = new Worm(6, &apos;a&apos;);</div><div class="line">		System.out.println(&quot;序列化操纵之前&quot;);</div><div class="line">		System.out.println(&quot;w=&quot; + w);</div><div class="line"></div><div class="line">		// 序列化操作1--FileOutputStream</div><div class="line">		ObjectOutputStream oos1 = new ObjectOutputStream(</div><div class="line">				new FileOutputStream(&quot;/Users/apple/WorkSpace/JavaExample/src/net/xixy/worm.out&quot;));</div><div class="line">		oos1.writeObject(&quot;Worm storage By FileOutputStream &quot;);</div><div class="line">		oos1.writeObject(w);// 必须所有引用的对象都实现序列化（本例终究是Data这个类），否则抛出有java.io.NotSerializableException:这个异常</div><div class="line">		oos1.close();</div><div class="line"></div><div class="line">		// 反序列化操作1---FileInputStream</div><div class="line">		ObjectInputStream ois1 = new ObjectInputStream(new FileInputStream(&quot;worm.out&quot;));</div><div class="line">		String s1 = (String) ois1.readObject();</div><div class="line">		Worm w1 = (Worm) ois1.readObject();</div><div class="line">		ois1.close();</div><div class="line">		System.out.println(&quot;反序列化操作1之后&quot;);</div><div class="line">		System.out.println(s1);</div><div class="line">		System.out.println(&quot;w1:&quot; + w1);</div><div class="line"></div><div class="line">		// 序列化操作2--ByteArrayOutputStream</div><div class="line">		ByteArrayOutputStream byteOutStream = new ByteArrayOutputStream();</div><div class="line">		ObjectOutputStream oos2 = new ObjectOutputStream(byteOutStream);</div><div class="line">		oos2.writeObject(&quot;Worm storage By ByteOutputStream &quot;);</div><div class="line">		oos2.writeObject(w);</div><div class="line">		oos2.flush();</div><div class="line"></div><div class="line">		// 反序列操作2--ByteArrayInputStream</div><div class="line">		ByteArrayInputStream byteInStream = new ByteArrayInputStream(byteOutStream.toByteArray());</div><div class="line">		ObjectInputStream ois2 = new ObjectInputStream(byteInStream);</div><div class="line">		String s2 = (String) ois2.readObject();</div><div class="line">		Worm w2 = (Worm) ois2.readObject();</div><div class="line">		ois2.close();</div><div class="line">		System.out.println(&quot;反序列化操作2之后&quot;);</div><div class="line">		System.out.println(s2);</div><div class="line">		System.out.println(&quot;w2:&quot; + w2);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>结果如下图所示</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">Worm constructor:6</div><div class="line">Worm constructor:5</div><div class="line">Worm constructor:4</div><div class="line">Worm constructor:3</div><div class="line">Worm constructor:2</div><div class="line">Worm constructor:1</div><div class="line">序列化操纵之前</div><div class="line">w=:a(853):b(119):c(802):d(788):e(199):f(881)</div><div class="line">反序列化操作1之后</div><div class="line">Worm storage By FileOutputStream </div><div class="line">w1::a(853):b(119):c(802):d(788):e(199):f(881)</div><div class="line">反序列化操作2之后</div><div class="line">Worm storage By ByteOutputStream </div><div class="line">w2::a(853):b(119):c(802):d(788):e(199):f(881)</div></pre></td></tr></table></figure>
+<h1 id="3-一些总结"><a href="#3-一些总结" class="headerlink" title="3 一些总结"></a>3 一些总结</h1><h2 id="3-1-反序列化后的对象，需要调用构造函数重新构造吗"><a href="#3-1-反序列化后的对象，需要调用构造函数重新构造吗" class="headerlink" title="3.1 反序列化后的对象，需要调用构造函数重新构造吗"></a>3.1 <span style="color: rgb(0, 0, 0);">反序列化后的对象，需要调用构造函数重新构造吗</span></h2><p><span style="color: rgb(0, 0, 0);">不需要。对于Serializable对象，对象完全以它存储的二进制位作为基础来构造，而不调用构造器。</span></p>
+<h2 id="3-2-序列前的对象与序列化后的对象是什么关系？是-“-”还是equal？是浅复制还是深复制？"><a href="#3-2-序列前的对象与序列化后的对象是什么关系？是-“-”还是equal？是浅复制还是深复制？" class="headerlink" title="3.2 序列前的对象与序列化后的对象是什么关系？是(“==”还是equal？是浅复制还是深复制？)"></a>3.2 <span style="color: rgb(0, 0, 0);">序列前的对象与序列化后的对象是什么关系？是(“==”还是equal？是浅复制还是深复制？)</span></h2><p><span style="color: rgb(0, 0, 0);">深复制，反序列化还原后的对象地址与原来的的地址不同。</span></p>
+<p><span style="color: rgb(0, 0, 0);"><span style="color: rgb(0, 0, 0);">序列化前后对象的地址不同了，但是内容是一样的，而且对象中包含的引用也相同。换句话说，通过序列化操作</span><span style="color: rgb(255, 0, 0);"><strong>，我们可以实现对任何可Serializable对象的”深度复制（deep copy）”——这意味着我们复制的是整个对象网，而不仅仅是基本对象及其引用。对于同一流的对象，他们的地址是相同，说明他们是同一个对象，但是与其他流的对象地址却不相同</strong></span><span style="color: rgb(0, 0, 0);">。也就说，只要将对象序列化到单一流中，就可以恢复出与我们写出时一样的对象网，而且只要在同一流中，对象都是同一个。</span><br></span></p>
+<h2 id="3-3-SerialVersionID的作用是什么？"><a href="#3-3-SerialVersionID的作用是什么？" class="headerlink" title="3.3 SerialVersionID的作用是什么？"></a>3.3 SerialVersionID的作用是什么？</h2><p><span style="color: rgb(0, 0, 0);">在Java中，软件的兼容性是一个大问题，尤其在使用到对象串行性的时候，那么在某一个对象已经被串行化了，可是这个对象又被修改后重新部署了，那么在这种情况下， 用老软件来读取新文件格式虽然不是什么难事，但是有可能丢失一些信息。 </span><span style="color: rgb(0, 0, 0);">serialVersionUID来解决这些问题，新增的serialVersionUID必须定义成下面这种形式：static final long serialVersionUID=-2805284943658356093L;。其中数字后面加上的L表示这是一个long值。 通过这种方式</span><span style="color: rgb(0, 0, 0);">来解决不同的版本之间的串行话问题。</span></p>
+<p><span style="color: rgb(0, 0, 0);"><br></span></p>
+<h2 id="3-4-序列化与持久化的关系和区别是什么？"><a href="#3-4-序列化与持久化的关系和区别是什么？" class="headerlink" title="3.4 序列化与持久化的关系和区别是什么？"></a>3.4 序列化与持久化的关系和区别是什么？</h2><blockquote>
+<p><span style="color: rgb(107, 122, 140);">序列化 :</span> <span style="color: rgb(107, 122, 140);">把对象转换 为二进制数据(如网络传输,存储数据库等),必须实现序列化接口 (java.io.Serializable).</span></p>
+<p><span style="color: rgb(107, 122, 140);">持久化 :</span> <span style="color: rgb(107, 122, 140);">把对象保存 在介质上(如写文件,读文件不是), 没有接口实现,一般指方法调用.</span></p>
+</blockquote>
+<p>序列化是针对Java的RMI远程调用的，允许Java将一个对象的属性变量序列化来传输到远端的程序并按照相同的类还原对象。</p>
+<p>持久化是针对数据的存储，不限定于Java，就是将一定的数据以一定的方式保存在储存容器，现在普遍指的是存入数据库。</p>
+<p>序列化可以将一个复杂的对象转化为一维的数据，而这为持久化提供了很大的方便，因为文件就是一维的，将一维的东西写入文件自然比较方便。</p>
+<p>不过持久化是个很宽泛的概念，可以是写入文件，也可以是存入数据库，写入注册表等多种方式。其本意是延长对象或数据的生命周期，让其可以超越程序的生命周期，程序关闭了，甚至服务器关机了，下次运行程序时又可以让对象或数据恢复到原来的状态。</p>
+<p>而序列化也不一定是用来持久化的，可以是用来传递使用，如从计算机A传递到计算机B；也可以用来进行深拷贝；总之序列化主要解决从复杂的数据结构转化为一维结构，或者从一维结构从新构建复杂的数据结构。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://xixy.github.io/2017/03/28/序列化与反序列化/" data-id="cj0tf2da60005invv9nhrj7p9" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/序列化/">序列化</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/03/21/JUnit多测试用例的执行顺序问题/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">JUnit多测试用例的执行顺序问题</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-C/">C/C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCC/">GCC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSON/">JSON</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UML/">UML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/序列化/">序列化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/机器学习/">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编译/">编译</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/C-C/" style="font-size: 10px;">C/C++</a> <a href="/tags/GCC/" style="font-size: 10px;">GCC</a> <a href="/tags/JSON/" style="font-size: 10px;">JSON</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/elasticsearch/" style="font-size: 10px;">elasticsearch</a> <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/序列化/" style="font-size: 10px;">序列化</a> <a href="/tags/机器学习/" style="font-size: 10px;">机器学习</a> <a href="/tags/编译/" style="font-size: 20px;">编译</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/28/序列化与反序列化/">序列化与反序列化</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/21/JUnit多测试用例的执行顺序问题/">JUnit多测试用例的执行顺序问题</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/12/elasticsearch-Java-API使用以及坑的注意/">elasticsearch Java API使用以及坑的注意</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/12/Json格式总结/">Json格式总结</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/10/UML视图及diagram总结/">UML视图及diagram总结</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 习翔宇<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
