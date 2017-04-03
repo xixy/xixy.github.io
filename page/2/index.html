@@ -65,6 +65,154 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-GCC工作过程以及动态库静态库链接" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/03/07/GCC工作过程以及动态库静态库链接/" class="article-date">
+  <time datetime="2017-03-07T01:47:00.000Z" itemprop="datePublished">2017-03-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/07/GCC工作过程以及动态库静态库链接/">GCC工作过程以及动态库静态库链接</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="1-GCC介绍"><a href="#1-GCC介绍" class="headerlink" title="1. GCC介绍"></a>1. GCC介绍</h1><p>GCC（GNU Compiler Collection，GNU编译器套件），是由 GNU 开发的编程语言编译器。它是以GPL许可证所发行的自由软件，也是 GNU计划的关键部分。GCC原本作为GNU操作系统的官方编译器，<strong>现已被大多数类Unix操作系统（如Linux、BSD、Mac OS X等）采纳为标准的编译器</strong>，GCC同样适用于微软的Windows。[2] GCC是自由软件过程发展中的著名例子，由自由软件基金会以GPL协议发布。GCC 原名为 GNU C 语言编译器（GNU C Compiler），因为它原本只能处理 C语言。GCC 很快地扩展，变得可处理 C++。后来又扩展能够支持更多编程语言，如Fortran、Pascal、Objective-C、Java、Ada、Go以及各类处理器架构上的汇编语言等，所以改名GNU编译器套件（GNU Compiler Collection）。</p>
+<h1 id="2-GCC编译过程介绍"><a href="#2-GCC编译过程介绍" class="headerlink" title="2. GCC编译过程介绍"></a>2. GCC编译过程介绍</h1><p>GCC的编译流程分为4个步骤：</p>
+<ul>
+<li><p>预处理（Preprocess）</p>
+</li>
+<li><p>编译（Compilation）</p>
+</li>
+<li><p>汇编（Assembly）</p>
+</li>
+<li><p>链接（Linking）</p>
+</li>
+</ul>
+<p>下面分别介绍这几个过程在干什么，并用一个简单的HelloWorld的例子进行说明，源代码如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">#include&lt;stdio.h&gt;</div><div class="line">int main()&#123; </div><div class="line">        printf(“Hello World\n”);</div><div class="line">        return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="2-1-预处理（Preprocess）"><a href="#2-1-预处理（Preprocess）" class="headerlink" title="2.1 预处理（Preprocess）"></a>2.1 预处理（Preprocess）</h2><p>预编译过程主要处理那些源代码中以#开始的预编译指令，主要处理规则如下：</p>
+<ul>
+<li>将所有的#define删除，并且展开所有的宏定义；处理所有条件编译指令，如#if，#ifdef等；</li>
+<li>处理#include预编译指令，将被包含的文件插入到该预编译指令的位置。该过程递归进行，及被包含的文件可能还包含其他文件；</li>
+<li>删除所有的注释//和 /**/；</li>
+<li>添加行号和文件标识，如#2 “hello.c” 2,以便于编译时编译器产生调试用的行号信息及用于编译时产生编译错误或警告时能够显示行号信息；</li>
+<li><p>保留所有的#pragma编译器指令，因为编译器须要使用它们；</p>
+<p>在GCC中，我们执行指令</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gcc –E test.c –o test.i</div></pre></td></tr></table></figure>
+<p>得到hello.i，结果生成预处理之后的test.i文件，如下图所示：</p>
+<p><img src="http://assets.tianmaying.com/md-image/248a80bb5f858ef85589cc7c40650f95.png" alt="PreProcess.png"></p>
+<h2 id="2-2-编译（Compilation）"><a href="#2-2-编译（Compilation）" class="headerlink" title="2.2 编译（Compilation）"></a>2.2 编译（Compilation）</h2><p>编译过程就是把预处理完的文件进行一系列词法分析，语法分析，语义分析及优化后生成相应的汇编代码文件。在这里GCC内真正起作用的是C编译器ccl，执行命令为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gcc –S test.i –o test.s</div></pre></td></tr></table></figure>
+<p>我们得到这样一个汇编代码文件test.s，如下图所示：</p>
+<p><img src="http://assets.tianmaying.com/md-image/899a16dfbf03b7f6c66f8e24878c199e.png" alt="Compilation.png"></p>
+<h2 id="2-3-汇编（Assembly）"><a href="#2-3-汇编（Assembly）" class="headerlink" title="2.3 汇编（Assembly）"></a>2.3 汇编（Assembly）</h2><p>汇编器是将汇编代码转变成机器可以执行的命令，每一个汇编语句几乎都对应一条机器指令。汇编相对于编译过程比较简单，根据汇编指令和机器指令的对照表一一翻译即可。输入命令运行即可得到test.o的目标文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gcc –c test.c –o test.o</div></pre></td></tr></table></figure>
+<p>这里实际起作用的是GNU汇编器as。</p>
+<h2 id="2-4-链接（Linking）"><a href="#2-4-链接（Linking）" class="headerlink" title="2.4 链接（Linking）"></a>2.4 链接（Linking）</h2><p>链接器ld将各个目标文件组装在一起，解决符号依赖，库依赖关系，并生成可执行文件.在这个源程序中并没有定义printf的函数实现，且在预编译中包含进的”stdio.h”中也只有该函数的声明，而没有定义函数的实现，那么，是在哪里实现printf函数的呢？最后的答案是：系统把这些函数实现都被做到名为libc.so.6的库文件中去了，在没有特别指定时，gcc会到系统默认的搜索路径”/usr/lib”下进行查找，也就是链接到libc.so.6库函数中去，这样就能实现函数printf了，而这也就是链接的作用。函数库一般分为静态库和动态库两种，第三部分我来介绍函数库的部分。执行下面命令即可得到可执行文件test</p>
+<p><img src="http://assets.tianmaying.com/md-image/f1237e93aee62e9bfd7c0ed1548437a7.png" alt="Linking.png"></p>
+<h1 id="3-动态库与静态库"><a href="#3-动态库与静态库" class="headerlink" title="3. 动态库与静态库"></a>3. 动态库与静态库</h1><p>函数库一般分为静态库和动态库两种。</p>
+<ul>
+<li>静态库是指编译链接时，把库文件的代码全部加入到可执行文件中，因此生成的文件比较大，但在运行时也就不再需要库文件了。其后缀名一般为”.a”。</li>
+<li>动态库与之相反，在编译链接时并没有把库文件的代码加入到可执行文件中，而是在程序执行时由运行时链接文件加载库，这样可以节省系统的开销。动态库一般后缀名为”.so”，如前面所述的libc.so.6就是动态库。gcc在编译时默认使用动态库。（Linux下动态库文件的扩展名为”.so”（Shared Object）。按照约定，所有动态库文件名的形式是libname.so（可能在名字中加入版本号）。这样，线程函数库被称作 libthread.so。静态库的文件名形式是libname.a。共享archive的文件名形式是libname.sa。共享archive只是一种过渡形式，帮助人们从静态库转变到动态库。）</li>
+</ul>
+<p>先构造一个小的例子，用来说明如何用GCC编译得到动态库和静态库</p>
+<p>hello1.c文件为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">void print1(int i) &#123; int j;</div><div class="line">for(j=0;j&lt;i;j++) &#123; printf(&quot;%d * %d = %d\n&quot;,j,j,j*j); &#125;    &#125;</div></pre></td></tr></table></figure>
+<p>hello2.c文件为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">void print2(char *arr) &#123; char c; int i=0; while((c=arr[i++])!=&apos;\0&apos;) &#123; printf(&quot;%d****%c\n&quot;,i,c); &#125; &#125;</div></pre></td></tr></table></figure>
+<p>hello.c文件为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">void print1(int); </div><div class="line">void print2(char *);</div><div class="line">int main(int argc,char **argv) &#123; </div><div class="line">int i=100;</div><div class="line"> char *arr=&quot;THIS IS LAYMU&apos;S HOME!&quot;; </div><div class="line">print1(i); </div><div class="line">print2(arr);</div><div class="line">return 0; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>hello.c使用到了hello1.c和hello2.c中的函数，可以把这两个函数组合为库，以供更多的程序作为组件来调用。下面采用编译为静态库和编译为动态库的方式分别进行说明。</p>
+<h2 id="3-1-静态库使用"><a href="#3-1-静态库使用" class="headerlink" title="3.1 静态库使用"></a>3.1 静态库使用</h2><ul>
+<li>将hello1.c和hello2.c分别编译为hello1.o和hello2.o</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gcc -c hello1.c hello2.c</div></pre></td></tr></table></figure>
+<ul>
+<li>将hello1.o和hello2.o组合为libhello.a这个静态链接库</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ar -r libhello.a hello1.o hello2.o</div></pre></td></tr></table></figure>
+<ul>
+<li>将libhello.a拷贝到/usr/lib目录下，作为一个系统共享的静态链接库</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cp libhello.a /usr/lib</div></pre></td></tr></table></figure>
+<ul>
+<li>将hello.c编译为可执行程序hello，这个过程用到了-lhello选项，这个选项告诉gcc编译器到/usr/lib目录下去找libhello.a的静态链接库</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gcc -o hello hello.c -lhello</div></pre></td></tr></table></figure>
+<p>执行生成的可执行程序hello，即可得到输出结果。开一下小的脑洞，既然hello中包含了libhello.a这个静态链接库文件的内容，如果删除libhello.a之后，那么hello依然也可以执行，结果的确是这个样子</p>
+<h2 id="3-2-动态库使用"><a href="#3-2-动态库使用" class="headerlink" title="3.2 动态库使用"></a>3.2 动态库使用</h2><ul>
+<li>将hello1.c和hello2.c编译成hello1.o和hello2.o，-c意为只编译不链接，-fpic意为位置独立代码，指示编译程序生成的代码要适合共享库的内容这样的代码能够根据载入内存的位置计算内部地址。实际上只是告诉GCC产生的代码不要包含对函数和变量具体内存位置的引用，因为现在还无法知道使用该消息代码的应用程序会将它链接到哪一段内存地址空间。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gcc -c -fpic hello1.c hello2.c</div></pre></td></tr></table></figure>
+<ul>
+<li>将hello1.o和hello2.o组合为shared object，即动态链接库</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gcc -shared hello1.o hello2.o -o hello.so</div></pre></td></tr></table></figure>
+<ul>
+<li>将hello.so拷贝到/usr/lib目录下</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cp hello.so /usr/lib</div></pre></td></tr></table></figure>
+<ul>
+<li>将hello.c编译链接为hello的可执行程序，这个过程用到了动态链接库hello.so</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gcc -o hello hello.c hello.so</div></pre></td></tr></table></figure>
+<p>可以通过lld命令查看生成的hello程序以来的共享库包括那些，如下图所示，可以看到对hello.so的依赖</p>
+<p><img src="http://assets.tianmaying.com/md-image/08b2b296c370a53e8c5b41eff6dd8024.png" alt="LibDependency.png"></p>
+<p>同样我们删掉hello.so，那么就无法执行，如下图所示：</p>
+<p><img src="http://assets.tianmaying.com/md-image/b7f60a243397d4b830f5d8a429391b45.png" alt="ERRORDYNAMIC.png"></p>
+<h2 id="3-3-静态库与动态库链接、执行时的搜索路径顺序"><a href="#3-3-静态库与动态库链接、执行时的搜索路径顺序" class="headerlink" title="3.3 静态库与动态库链接、执行时的搜索路径顺序"></a>3.3 静态库与动态库链接、执行时的搜索路径顺序</h2><h3 id="3-3-1-静态库链接时搜索路径顺序"><a href="#3-3-1-静态库链接时搜索路径顺序" class="headerlink" title="3.3.1 静态库链接时搜索路径顺序"></a>3.3.1 静态库链接时搜索路径顺序</h3><ol>
+<li>ld会去找GCC命令行中的参数-L的目录中是否有该静态库；</li>
+<li>再去找GCC的环境变量LIBRARY_PATH</li>
+<li>再找内定目录/lib、/usr/lib、/usr/local/lib夏是否有该链接库，这是当初compile gcc的时候确定的</li>
+</ol>
+<h3 id="3-3-2-动态库链接时、执行时搜索路径顺序"><a href="#3-3-2-动态库链接时、执行时搜索路径顺序" class="headerlink" title="3.3.2 动态库链接时、执行时搜索路径顺序"></a>3.3.2 动态库链接时、执行时搜索路径顺序</h3><ol>
+<li>编译目标代码时指定的动态库搜索路径；</li>
+<li>环境变量LD_LIBRARY_PATH指定的动态库搜索路径；</li>
+<li>配置文件/etc/ld.so.conf中指定的动态库搜索路径；</li>
+<li>默认的动态搜索路径/lib;</li>
+<li>默认的动态库搜索路径/usr/lib</li>
+</ol>
+<p>大家可以去找找看相应的环境变量和conf文件</p>
+<h2 id="3-4-静态库与动态库的优缺点分析"><a href="#3-4-静态库与动态库的优缺点分析" class="headerlink" title="3.4 静态库与动态库的优缺点分析"></a>3.4 静态库与动态库的优缺点分析</h2><p>静态链接库的一个缺点是，如果我们同时运行了很多程序，并且使用了同一个库函数，这样在内存中就会大量拷贝同一个库函数，这样会浪费很多内存和存储空间。</p>
+<p>当一个程序使用动态库函数时，在链接阶段并不把函数代码链接进来，而只是链接函数的一个引用，当最终的函数倒入内存开始真正运行时，函数引用被解析，共享函数库的代码才真正被倒入到内存中，这样共享链接库的函数就可以被许多程序同时共享，而且只存储一次即可。同时动态库可以独立更新，与调用它的程序互不影响。</p>
+<h2 id="3-5-如何使用库"><a href="#3-5-如何使用库" class="headerlink" title="3.5 如何使用库"></a>3.5 如何使用库</h2><p>gcc中关于库的参数有：</p>
+<p>-L 指定搜寻库的目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">如指定当前目录 gcc -L .</div></pre></td></tr></table></figure>
+<p>-l 指定要链接的库的名称</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">加入库的名称是libmylib.a，则gcc -l mylib，即去头去尾。</div></pre></td></tr></table></figure>
+<p>–static 组织在链接时使用动态库</p>
+<p>–shared 生成动态库</p>
+<p>–static-libgcc 链接静态libgcc库</p>
+<p>–shared-libgcc 链接动态libgcc库</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://xixy.github.io/2017/03/07/GCC工作过程以及动态库静态库链接/" data-id="cj11sng3f0005l5vvett69tgo" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C-C/">C/C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GCC/">GCC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/编译/">编译</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-C-C-头文件相互包含的编译问题" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/03/07/C-C-头文件相互包含的编译问题/" class="article-date">
@@ -107,7 +255,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/03/07/C-C-头文件相互包含的编译问题/" data-id="cj11jec3w0000zdvvi8tw9cn8" class="article-share-link">Share</a>
+      <a data-url="http://xixy.github.io/2017/03/07/C-C-头文件相互包含的编译问题/" data-id="cj11sng370001l5vv9c8j11fo" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/编译/">编译</a></li></ul>
@@ -167,6 +315,10 @@
       <ul>
         
           <li>
+            <a href="/2017/04/03/Java线程及锁机制/">Java线程及锁机制</a>
+          </li>
+        
+          <li>
             <a href="/2017/04/03/Java-StringBuilder类/">Java StringBuilder类</a>
           </li>
         
@@ -180,10 +332,6 @@
         
           <li>
             <a href="/2017/03/28/序列化与反序列化/">序列化与反序列化</a>
-          </li>
-        
-          <li>
-            <a href="/2017/03/21/JUnit多测试用例的执行顺序问题/">JUnit多测试用例的执行顺序问题</a>
           </li>
         
       </ul>
