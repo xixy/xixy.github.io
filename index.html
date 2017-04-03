@@ -65,6 +65,57 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Java-StringBuilder类" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/03/Java-StringBuilder类/" class="article-date">
+  <time datetime="2017-04-03T03:08:30.000Z" itemprop="datePublished">2017-04-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/03/Java-StringBuilder类/">Java StringBuilder类</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="1-StringBuilder类"><a href="#1-StringBuilder类" class="headerlink" title="1 StringBuilder类"></a>1 StringBuilder类</h1><p>如果Java中只有不可变的字符串可供使用的话，那么就不得不在一组String操作中为每一个中间结果都创建一个新的String对象，例如考虑一下编译器将如何计算下面的表达式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"> public static String guillemots(String quote)&#123;</div><div class="line">        return &apos;《&apos;+quoto+&apos;》&apos;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果编译器仅限于使用String表达式，那么就只能这样做</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">quoted = String.valueOf(&quot;《&quot;).concat(quote).concat(String.valueOf(&quot;》&quot;));</div></pre></td></tr></table></figure>
+<p>每次调用valueOf和concat方法都会创建一个新的String对象（因为是一次函数调用），所以该擦欧走将会创建4个String对象，其中只有一个String对象在以后还会用到，而其他的字符串仍然需要创建、赋值和垃圾回收等开销。</p>
+<p>事实上，编译器要比上述方法更加有效，通过StringBuilder对象从表达式中构造字符串，只有在必须的时刻才创建最终的String对象。StringBuilder对象可以被修改，所以根本不需要创建新的对象来保存中间结果。通过使用StringBuilder，上述的表达式可以表示为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">quoted= new StringBuilder().append(&quot;&lt;&quot;).append(quote).append(&quot;&gt;&quot;).toString;</div></pre></td></tr></table></figure>
+<p>这段代码之创建了一个用来存储构造内容的StringBuilder对象，并在其中追加元素，然后使用toString方法从得到的结果中创建了一个String对象。</p>
+<h1 id="2-一个小测试"><a href="#2-一个小测试" class="headerlink" title="2 一个小测试"></a>2 一个小测试</h1><p>我们用两种方法来构造一个长的String，然后对比其开销</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">//策略1	</div><div class="line">public static void stringTest()&#123;</div><div class="line">		Date begin = new Date();</div><div class="line">		Date end = new Date();</div><div class="line">		String init = &quot;hello&quot;;</div><div class="line">		while ((end.getTime()-begin.getTime())&lt;1000) &#123;</div><div class="line">			init += init;</div><div class="line">			end = new Date();</div><div class="line">		&#125;</div><div class="line">		System.out.println(init.length());</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">//策略2</div><div class="line">	public static void stringBuilderTest() &#123;</div><div class="line">		StringBuilder buf = new StringBuilder();</div><div class="line"></div><div class="line">		Date begin = new Date();</div><div class="line">		Date end = new Date();</div><div class="line">		buf.append(&quot;hello&quot;);</div><div class="line">		while ((end.getTime()-begin.getTime())&lt;1000) &#123;</div><div class="line">			buf.append(buf.toString());</div><div class="line">			end = new Date();</div><div class="line">		&#125;</div><div class="line">		System.out.println(buf.toString().length());</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>在同样的1000ms后，策略1的长度是<font>167772160，策略2的长度是<font>335544320，显然策略2的开销更小，更加能够节省时间。</font></font></p>
+<p>因此在涉及到频繁的String操作的时候，最好采用StringBuilder类来进行。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://xixy.github.io/2017/04/03/Java-StringBuilder类/" data-id="cj11jec430003zdvv6dkq9eng" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Java反射机制" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/03/29/Java反射机制/" class="article-date">
@@ -108,7 +159,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/03/29/Java反射机制/" data-id="cj0uszilr000138vvavdzg6ku" class="article-share-link">Share</a>
+      <a data-url="http://xixy.github.io/2017/03/29/Java反射机制/" data-id="cj11jec460005zdvvn33038a1" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/反射/">反射</a></li></ul>
@@ -162,7 +213,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/03/29/反射技术用于工厂模式/" data-id="cj0usziln000038vv81d4mfnx" class="article-share-link">Share</a>
+      <a data-url="http://xixy.github.io/2017/03/29/反射技术用于工厂模式/" data-id="cj11jec4d000czdvv3ywr6qed" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/反射/">反射</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/设计模式/">设计模式</a></li></ul>
@@ -238,7 +289,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/03/28/序列化与反序列化/" data-id="cj0uszimc000k38vvzyk3jjv7" class="article-share-link">Share</a>
+      <a data-url="http://xixy.github.io/2017/03/28/序列化与反序列化/" data-id="cj11jec4f000fzdvvy0j3xts6" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/序列化/">序列化</a></li></ul>
@@ -302,7 +353,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/03/21/JUnit多测试用例的执行顺序问题/" data-id="cj0uszim9000h38vvng4fual3" class="article-share-link">Share</a>
+      <a data-url="http://xixy.github.io/2017/03/21/JUnit多测试用例的执行顺序问题/" data-id="cj11jec440004zdvv9yv1lt81" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
@@ -351,7 +402,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/03/12/elasticsearch-Java-API使用以及坑的注意/" data-id="cj0uszimi000o38vvcdrrse60" class="article-share-link">Share</a>
+      <a data-url="http://xixy.github.io/2017/03/12/elasticsearch-Java-API使用以及坑的注意/" data-id="cj11jec490008zdvve2ynkl3b" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li></ul>
@@ -445,7 +496,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/03/12/Json格式总结/" data-id="cj0uszimf000m38vvkiga93a3" class="article-share-link">Share</a>
+      <a data-url="http://xixy.github.io/2017/03/12/Json格式总结/" data-id="cj11jec4d000azdvv9rvwscln" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JSON/">JSON</a></li></ul>
@@ -558,7 +609,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/03/10/UML视图及diagram总结/" data-id="cj0uszimh000n38vv9yks6mi0" class="article-share-link">Share</a>
+      <a data-url="http://xixy.github.io/2017/03/10/UML视图及diagram总结/" data-id="cj11jec480007zdvvqd9wl4kl" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UML/">UML</a></li></ul>
@@ -654,7 +705,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/03/07/机器学习性能评估指标/" data-id="cj0uszimk000q38vvm6mvogwl" class="article-share-link">Share</a>
+      <a data-url="http://xixy.github.io/2017/03/07/机器学习性能评估指标/" data-id="cj11jec53001azdvvdfbnvgnh" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/机器学习/">机器学习</a></li></ul>
@@ -802,7 +853,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/03/07/GCC工作过程以及动态库静态库链接/" data-id="cj0uszima000i38vvnpcz9eae" class="article-share-link">Share</a>
+      <a data-url="http://xixy.github.io/2017/03/07/GCC工作过程以及动态库静态库链接/" data-id="cj11jec3z0001zdvva6olz5x7" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C-C/">C/C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GCC/">GCC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/编译/">编译</a></li></ul>
@@ -814,61 +865,11 @@
 
 
   
-    <article id="post-C-C-头文件相互包含的编译问题" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/03/07/C-C-头文件相互包含的编译问题/" class="article-date">
-  <time datetime="2017-03-07T01:41:40.000Z" itemprop="datePublished">2017-03-07</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/07/C-C-头文件相互包含的编译问题/">C/C++头文件相互包含的编译问题</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1 问题描述"></a>1 问题描述</h1><p>两个类Class Message和Class Folder分别定义在两个不同的头文件Message.h和Folder.h中，然后类成员函数的实现分别在Message.cpp和Folder.cpp文件中，两个文件分别编译为.o文件，与main.cpp文件合并编译链接为可运行的二进制文件。代码如下所示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">/**************************************************************Message.h*****************************/</div><div class="line">#ifndef MESSAGE_H_</div><div class="line">#define MESSAGE_H_</div><div class="line"></div><div class="line">using namespace std;</div><div class="line">#include&lt;iostream&gt;</div><div class="line">#include&lt;set&gt;</div><div class="line">#include &quot;Folder.h&quot;</div><div class="line">class Message</div><div class="line">&#123;</div><div class="line">	friend class Folder;</div><div class="line">	friend void swap(Message &amp;lhs, Message &amp;rhs);</div><div class="line">public:</div><div class="line">	explicit Message(const std::string &amp;str=&quot;&quot;):contents(str)&#123;&#125;</div><div class="line">	~Message();</div><div class="line">	Message(const Message&amp;);</div><div class="line">	Message&amp; operator=(const Message&amp;);</div><div class="line">	void save(Folder&amp;);</div><div class="line">	void remove(Folder&amp;);</div><div class="line">private:</div><div class="line">	std::string contents;</div><div class="line">	std::set&lt;Folder *&gt;folders;</div><div class="line">	void add_to_Folders(const Message&amp;);</div><div class="line">	void remove_from_Folders();</div><div class="line"></div><div class="line">&#125;;</div><div class="line">#endif</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">/***************************************************************Folder.h*****************************/</div><div class="line">#ifndef FOLDER_H_</div><div class="line"></div><div class="line">#define FOLDER_H_</div><div class="line"></div><div class="line">#include&lt;iostream&gt;</div><div class="line">#include &quot;Message.h&quot;</div><div class="line">using namespace std;</div><div class="line">class Folder</div><div class="line">&#123;</div><div class="line">public:</div><div class="line">	static int count;</div><div class="line">	int folder_index;</div><div class="line">	friend class Message;</div><div class="line">	Folder();</div><div class="line">	~Folder();</div><div class="line">	void addMsg(Message *m);</div><div class="line">	void remMsg(Message *m);</div><div class="line">	void show();</div><div class="line">private:</div><div class="line">	std::set&lt;Message *&gt; messages;</div><div class="line"></div><div class="line">&#125;;</div><div class="line">#endif</div></pre></td></tr></table></figure>
-<p>可以看到两个类内都有彼此的类对象作为自己的成员变量，因此需要在头文件中进行include，这样才能预处理、编译通过。对于.cpp文件不重要，所以这里不贴出来。</p>
-<p>整体项目的Makefile如下所示</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">main:Folder Message</div><div class="line">	g++ -o main main.cpp Message.o Folder.o -std=c++11</div><div class="line">Message:Message.h Message.cpp </div><div class="line">	g++ -c -fpic Message.cpp -std=c++11 -I./</div><div class="line">Folder:Folder.h Folder.cpp</div><div class="line">	g++ -c -fpic Folder.cpp -std=c++11</div></pre></td></tr></table></figure>
-<p>在对Message目标执行语句的时候就出错了</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">In file included from Message.h:8:0,</div><div class="line">                 from Message.cpp:1:</div><div class="line">Folder.h:17:14: error: ‘Message’ has not been declared</div><div class="line">  void addMsg(Message *m);</div><div class="line">              ^</div><div class="line">Folder.h:18:14: error: ‘Message’ has not been declared</div><div class="line">  void remMsg(Message *m);</div><div class="line">              ^</div><div class="line">Folder.h:21:11: error: ‘Message’ was not declared in this scope</div><div class="line">  std::set&lt;Message *&gt; messages;</div><div class="line">           ^</div><div class="line">Folder.h:21:20: error: template argument 1 is invalid</div><div class="line">  std::set&lt;Message *&gt; messages;</div></pre></td></tr></table></figure>
-<p>显然这里是没有办法找到Message类的定义</p>
-<h1 id="2-问题分析"><a href="#2-问题分析" class="headerlink" title="2 问题分析"></a>2 问题分析</h1><p>g++进行编译的时候，首先进行预处理将包含的头文件展开，得到的结果如下所示，我们以Message.h中展开Folder.h为例</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">/**************************************************************Message.h*****************************/</div><div class="line">#ifndef MESSAGE_H_</div><div class="line">#define MESSAGE_H_</div><div class="line"></div><div class="line">using namespace std;</div><div class="line">#include&lt;iostream&gt;</div><div class="line">#include&lt;set&gt;</div><div class="line"></div><div class="line">/**********展开的部分开始**************/</div><div class="line">class Folder</div><div class="line">&#123;</div><div class="line">public:</div><div class="line">	static int count;</div><div class="line">	int folder_index;</div><div class="line">	friend class Message;</div><div class="line">	Folder();</div><div class="line">	~Folder();</div><div class="line">	void addMsg(Message *m);</div><div class="line">	void remMsg(Message *m);</div><div class="line">	void show();</div><div class="line">private:</div><div class="line">	std::set&lt;Message *&gt; messages;</div><div class="line"></div><div class="line">&#125;;</div><div class="line"></div><div class="line">/**********展开的部分结束**************/</div><div class="line">class Message</div><div class="line">&#123;</div><div class="line">	friend class Folder;</div><div class="line">	friend void swap(Message &amp;lhs, Message &amp;rhs);</div><div class="line">public:</div><div class="line">	explicit Message(const std::string &amp;str=&quot;&quot;):contents(str)&#123;&#125;</div><div class="line">	~Message();</div><div class="line">	Message(const Message&amp;);</div><div class="line">	Message&amp; operator=(const Message&amp;);</div><div class="line">	void save(Folder&amp;);</div><div class="line">	void remove(Folder&amp;);</div><div class="line">private:</div><div class="line">	std::string contents;</div><div class="line">	std::set&lt;Folder *&gt;folders;</div><div class="line">	void add_to_Folders(const Message&amp;);</div><div class="line">	void remove_from_Folders();</div><div class="line"></div><div class="line">&#125;;</div><div class="line">#endif</div></pre></td></tr></table></figure>
-<p>这样对展开的Message.h进行处理的时候，Folder中包含了Message类对象，但是因为Class Message的定义在下面，所以没法找到。</p>
-<p>那么能不能把#include “Folder.h”放到类Class的定义的下面呢？显然不行，因为Class Message包含了Folder类对象，这样又会找不到Class Folder的定义。</p>
-<p>对于Folder.h同理，include的Folder.h展开之后，会发现找不到Folder的定义。</p>
-<h1 id="3-问题解决"><a href="#3-问题解决" class="headerlink" title="3 问题解决"></a>3 问题解决</h1><p>在Message.h的类定义之前加上Class Message;的前置声明语句即可，这样就不会再预处理编译的时候报找不到Message的定义的错误了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">#ifndef MESSAGE_H_</div><div class="line">#define MESSAGE_H_</div><div class="line"></div><div class="line">using namespace std;</div><div class="line">#include&lt;iostream&gt;</div><div class="line">#include&lt;set&gt;</div><div class="line">class Message;//在Folder.h展开之前的地方添加类的声明语句</div><div class="line">#include &quot;Folder.h&quot;</div><div class="line">class Message</div><div class="line">&#123;</div><div class="line">	friend class Folder;</div><div class="line">	friend void swap(Message &amp;lhs, Message &amp;rhs);</div><div class="line">public:</div><div class="line">	explicit Message(const std::string &amp;str=&quot;&quot;):contents(str)&#123;&#125;</div><div class="line">	~Message();</div><div class="line">	Message(const Message&amp;);</div><div class="line">	Message&amp; operator=(const Message&amp;);</div><div class="line">	void save(Folder&amp;);</div><div class="line">	void remove(Folder&amp;);</div><div class="line">private:</div><div class="line">	std::string contents;</div><div class="line">	std::set&lt;Folder *&gt;folders;</div><div class="line">	void add_to_Folders(const Message&amp;);</div><div class="line">	void remove_from_Folders();</div><div class="line"></div><div class="line">&#125;;</div><div class="line"></div><div class="line">#endif</div></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/03/07/C-C-头文件相互包含的编译问题/" data-id="cj0uszilv000338vv5m4y5ej2" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/编译/">编译</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
 
 
-  
-
+  <nav id="page-nav">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">__('next') &raquo;</a>
+  </nav>
 </section>
         
           <aside id="sidebar">
@@ -899,7 +900,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a></li></ul>
     </div>
   </div>
 
@@ -910,6 +911,10 @@
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2017/04/03/Java-StringBuilder类/">Java StringBuilder类</a>
+          </li>
         
           <li>
             <a href="/2017/03/29/Java反射机制/">Java反射机制</a>
@@ -925,10 +930,6 @@
         
           <li>
             <a href="/2017/03/21/JUnit多测试用例的执行顺序问题/">JUnit多测试用例的执行顺序问题</a>
-          </li>
-        
-          <li>
-            <a href="/2017/03/12/elasticsearch-Java-API使用以及坑的注意/">elasticsearch Java API使用以及坑的注意</a>
           </li>
         
       </ul>

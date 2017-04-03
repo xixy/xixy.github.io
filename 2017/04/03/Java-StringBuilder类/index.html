@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Java StringBuilder类 | 习翔宇</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1 StringBuilder类如果Java中只有不可变的字符串可供使用的话，那么就不得不在一组String操作中为每一个中间结果都创建一个新的String对象，例如考虑一下编译器将如何计算下面的表达式
+123 public static String guillemots(String quote)&amp;#123;        return &amp;apos;《&amp;apos;+quoto+&amp;apos;》&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java StringBuilder类">
+<meta property="og:url" content="http://xixy.github.io/2017/04/03/Java-StringBuilder类/index.html">
+<meta property="og:site_name" content="习翔宇">
+<meta property="og:description" content="1 StringBuilder类如果Java中只有不可变的字符串可供使用的话，那么就不得不在一组String操作中为每一个中间结果都创建一个新的String对象，例如考虑一下编译器将如何计算下面的表达式
+123 public static String guillemots(String quote)&amp;#123;        return &amp;apos;《&amp;apos;+quoto+&amp;apos;》&amp;">
+<meta property="og:updated_time" content="2017-04-03T03:09:03.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java StringBuilder类">
+<meta name="twitter:description" content="1 StringBuilder类如果Java中只有不可变的字符串可供使用的话，那么就不得不在一组String操作中为每一个中间结果都创建一个新的String对象，例如考虑一下编译器将如何计算下面的表达式
+123 public static String guillemots(String quote)&amp;#123;        return &amp;apos;《&amp;apos;+quoto+&amp;apos;》&amp;">
+  
+    <link rel="alternate" href="/atom.xml" title="习翔宇" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">习翔宇</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">习翔宇的博客</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://xixy.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Java-StringBuilder类" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/03/Java-StringBuilder类/" class="article-date">
+  <time datetime="2017-04-03T03:08:30.000Z" itemprop="datePublished">2017-04-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Java StringBuilder类
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="1-StringBuilder类"><a href="#1-StringBuilder类" class="headerlink" title="1 StringBuilder类"></a>1 StringBuilder类</h1><p>如果Java中只有不可变的字符串可供使用的话，那么就不得不在一组String操作中为每一个中间结果都创建一个新的String对象，例如考虑一下编译器将如何计算下面的表达式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"> public static String guillemots(String quote)&#123;</div><div class="line">        return &apos;《&apos;+quoto+&apos;》&apos;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果编译器仅限于使用String表达式，那么就只能这样做</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">quoted = String.valueOf(&quot;《&quot;).concat(quote).concat(String.valueOf(&quot;》&quot;));</div></pre></td></tr></table></figure>
+<p>每次调用valueOf和concat方法都会创建一个新的String对象（因为是一次函数调用），所以该擦欧走将会创建4个String对象，其中只有一个String对象在以后还会用到，而其他的字符串仍然需要创建、赋值和垃圾回收等开销。</p>
+<p>事实上，编译器要比上述方法更加有效，通过StringBuilder对象从表达式中构造字符串，只有在必须的时刻才创建最终的String对象。StringBuilder对象可以被修改，所以根本不需要创建新的对象来保存中间结果。通过使用StringBuilder，上述的表达式可以表示为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">quoted= new StringBuilder().append(&quot;&lt;&quot;).append(quote).append(&quot;&gt;&quot;).toString;</div></pre></td></tr></table></figure>
+<p>这段代码之创建了一个用来存储构造内容的StringBuilder对象，并在其中追加元素，然后使用toString方法从得到的结果中创建了一个String对象。</p>
+<h1 id="2-一个小测试"><a href="#2-一个小测试" class="headerlink" title="2 一个小测试"></a>2 一个小测试</h1><p>我们用两种方法来构造一个长的String，然后对比其开销</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">//策略1	</div><div class="line">public static void stringTest()&#123;</div><div class="line">		Date begin = new Date();</div><div class="line">		Date end = new Date();</div><div class="line">		String init = &quot;hello&quot;;</div><div class="line">		while ((end.getTime()-begin.getTime())&lt;1000) &#123;</div><div class="line">			init += init;</div><div class="line">			end = new Date();</div><div class="line">		&#125;</div><div class="line">		System.out.println(init.length());</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">//策略2</div><div class="line">	public static void stringBuilderTest() &#123;</div><div class="line">		StringBuilder buf = new StringBuilder();</div><div class="line"></div><div class="line">		Date begin = new Date();</div><div class="line">		Date end = new Date();</div><div class="line">		buf.append(&quot;hello&quot;);</div><div class="line">		while ((end.getTime()-begin.getTime())&lt;1000) &#123;</div><div class="line">			buf.append(buf.toString());</div><div class="line">			end = new Date();</div><div class="line">		&#125;</div><div class="line">		System.out.println(buf.toString().length());</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>在同样的1000ms后，策略1的长度是<font>167772160，策略2的长度是<font>335544320，显然策略2的开销更小，更加能够节省时间。</font></font></p>
+<p>因此在涉及到频繁的String操作的时候，最好采用StringBuilder类来进行。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://xixy.github.io/2017/04/03/Java-StringBuilder类/" data-id="cj11jec430003zdvv6dkq9eng" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/03/29/Java反射机制/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Java反射机制</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-C/">C/C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCC/">GCC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSON/">JSON</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UML/">UML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/反射/">反射</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/序列化/">序列化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/机器学习/">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编译/">编译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/C-C/" style="font-size: 10px;">C/C++</a> <a href="/tags/GCC/" style="font-size: 10px;">GCC</a> <a href="/tags/JSON/" style="font-size: 10px;">JSON</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/elasticsearch/" style="font-size: 10px;">elasticsearch</a> <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/反射/" style="font-size: 15px;">反射</a> <a href="/tags/序列化/" style="font-size: 10px;">序列化</a> <a href="/tags/机器学习/" style="font-size: 10px;">机器学习</a> <a href="/tags/编译/" style="font-size: 15px;">编译</a> <a href="/tags/设计模式/" style="font-size: 10px;">设计模式</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/04/03/Java-StringBuilder类/">Java StringBuilder类</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/29/Java反射机制/">Java反射机制</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/29/反射技术用于工厂模式/">反射技术用于工厂模式</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/28/序列化与反序列化/">序列化与反序列化</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/21/JUnit多测试用例的执行顺序问题/">JUnit多测试用例的执行顺序问题</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 习翔宇<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
