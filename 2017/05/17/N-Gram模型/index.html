@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>N-Gram模型 | 习翔宇</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="N-Gram是自然语言处理中的重要模型，通常用于两个场景：
+
+在NLP中人们基于一定的语料库，可以利用N-Gram来预计或者评估一个句子是否合理，即P(w1,w2,w3,…,wn)的大小
+用来评估两个字符串之间的相似性，是字符串模糊匹配中的常用手段
+
+1 基于N-Gram模型定义的字符串距离在自然语言处理时，最常用也最基础的一个操作是就是“模式匹配”，或者称为“字符串查找”。而模式匹配（字符串查找">
+<meta property="og:type" content="article">
+<meta property="og:title" content="N-Gram模型">
+<meta property="og:url" content="http://xixy.github.io/2017/05/17/N-Gram模型/index.html">
+<meta property="og:site_name" content="习翔宇">
+<meta property="og:description" content="N-Gram是自然语言处理中的重要模型，通常用于两个场景：
+
+在NLP中人们基于一定的语料库，可以利用N-Gram来预计或者评估一个句子是否合理，即P(w1,w2,w3,…,wn)的大小
+用来评估两个字符串之间的相似性，是字符串模糊匹配中的常用手段
+
+1 基于N-Gram模型定义的字符串距离在自然语言处理时，最常用也最基础的一个操作是就是“模式匹配”，或者称为“字符串查找”。而模式匹配（字符串查找">
+<meta property="og:image" content="http://pic1.tianmaying.com/md-image/694322e47d05c525492529307a2267b9.png">
+<meta property="og:image" content="http://pic1.tianmaying.com/md-image/05b1aade5189275bf7f41f7cde1b499f.png">
+<meta property="og:image" content="http://pic1.tianmaying.com/md-image/344a6121b3c8b2d4dcc1c1e3760be478.png">
+<meta property="og:image" content="http://pic1.tianmaying.com/md-image/834f4523b4730664b07fc55a0f149ea2.png">
+<meta property="og:updated_time" content="2017-05-17T10:08:51.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="N-Gram模型">
+<meta name="twitter:description" content="N-Gram是自然语言处理中的重要模型，通常用于两个场景：
+
+在NLP中人们基于一定的语料库，可以利用N-Gram来预计或者评估一个句子是否合理，即P(w1,w2,w3,…,wn)的大小
+用来评估两个字符串之间的相似性，是字符串模糊匹配中的常用手段
+
+1 基于N-Gram模型定义的字符串距离在自然语言处理时，最常用也最基础的一个操作是就是“模式匹配”，或者称为“字符串查找”。而模式匹配（字符串查找">
+<meta name="twitter:image" content="http://pic1.tianmaying.com/md-image/694322e47d05c525492529307a2267b9.png">
+  
+    <link rel="alternate" href="/atom.xml" title="习翔宇" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">习翔宇</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">习翔宇的博客</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://xixy.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-N-Gram模型" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/05/17/N-Gram模型/" class="article-date">
+  <time datetime="2017-05-17T10:02:53.000Z" itemprop="datePublished">2017-05-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      N-Gram模型
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>N-Gram是自然语言处理中的重要模型，通常用于两个场景：</p>
+<ol>
+<li>在NLP中人们基于一定的语料库，可以利用N-Gram来预计或者评估一个句子是否合理，即P(w1,w2,w3,…,wn)的大小</li>
+<li>用来评估两个字符串之间的相似性，是字符串模糊匹配中的常用手段</li>
+</ol>
+<h1 id="1-基于N-Gram模型定义的字符串距离"><a href="#1-基于N-Gram模型定义的字符串距离" class="headerlink" title="1 基于N-Gram模型定义的字符串距离"></a>1 基于N-Gram模型定义的字符串距离</h1><p>在自然语言处理时，最常用也最基础的一个操作是就是“模式匹配”，或者称为“字符串查找”。而模式匹配（字符串查找）又分为精确匹配和模糊匹配两种。</p>
+<ol>
+<li>所谓精确匹配，大家应该并不陌生，比如我们要统计一篇文章中关键词 “information” 出现的次数，这是所使用的方法就是精确的模式匹配。这方面的算法也比较多，而且应该是计算机相关专业必修的基础课中都会涉及到的内容，例如KMP算法、BM算法和BMH算法等等。</li>
+<li>另外一种匹配就是所谓的模糊匹配，它的应用也随处可见。例如，一般的文字处理软件（例如，Microsoft Word等）都会提供拼写检查功能。当你输入一个错误的单词，例如 “ informtaion” 时，系统会提示你是否要输入的词其实是 “information” 。将一个可能错拼单词映射到一个推荐的正确拼写上所才有的技术就是模糊匹配。</li>
+</ol>
+<p>模糊匹配的关键在于如何衡量两个长得很像的单词（或字符串）之间的“差异”。这种差异通常又称为“距离”。这方面的具体算法有很多，</p>
+<ol>
+<li>例如基于编辑距离的概念，人们设计出了 Smith-Waterman 算法和</li>
+<li>Needleman-Wunsch 算法，其中后者还是历史上最早的应用动态规划思想设计的算法之一。</li>
+</ol>
+<p>现在Smith-Waterman 算法和Needleman-Wunsch 算法在生物信息学领域也有重要应用，研究人员常常用它们来计算两个DNA序列片段之间的“差异”（或称“距离”）。甚至于在LeetCode上也有一道“No.72 Edit Distance”，其本质就是在考察上述两种算法的实现。可见相关问题离我们并不遥远。</p>
+<h2 id="1-1-N-Gram在模糊匹配中的应用"><a href="#1-1-N-Gram在模糊匹配中的应用" class="headerlink" title="1.1 N-Gram在模糊匹配中的应用"></a>1.1 N-Gram在模糊匹配中的应用</h2><p>我们除了可以定义两个字符串之间的编辑距离（通常利用Needleman-Wunsch算法或Smith-Waterman算法）之外，还可以定义它们之间的N-Gram距离。</p>
+<p>假设有一个字符串 s，那么该字符串的N-Gram就表示按长度 N 切分原词得到的词段，也就是 s 中所有长度为 N 的子字符串。例如<span style="color: rgb(85, 85, 85);">以 N = 2 为例对字符串Gorbachev和Gorbechyov进行分段，可得如下结果</span></p>
+<p><span style="color: rgb(85, 85, 85);"><img src="http://pic1.tianmaying.com/md-image/694322e47d05c525492529307a2267b9.png" alt="20160429144714271.png"></span></p>
+<p>设想如果有两个字符串，然后分别求它们的N-Gram，那么就可以从它们的共有子串的数量这个角度去定义两个字符串间的N-Gram距离。但是仅仅是简单地对共有子串进行计数显然也存在不足，这种方案显然忽略了两个字符串长度差异可能导致的问题。比如字符串 girl 和 girlfriend，二者所拥有的公共子串数量显然与 girl 和其自身所拥有的公共子串数量相等，但是我们并不能据此认为 girl 和girlfriend 是两个等同的匹配。</p>
+<p>为了解决该问题，有学者便提出以非重复的N-Gram分词为基础来定义 N-Gram距离这一概念</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">|GN(s)|+|GN(t)|−2×|GN(s)∩GN(t)|</div></pre></td></tr></table></figure>
+<p><span style="color: rgb(85, 85, 85);"><span style="color: rgb(85, 85, 85);">此处，</span><span style="color: rgb(85, 85, 85);">|GN(s)|</span> <span style="color: rgb(85, 85, 85);">是字符串</span> <span style="color: rgb(85, 85, 85);">s</span> <span style="color: rgb(85, 85, 85);">的 N-Gram集合，N 值一般取2或者3，对于上述的例子，我们计算N-Gram距离如下所示：</span></span></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">8 + 9 − 2 × 4 = 9</div></pre></td></tr></table></figure>
+<p><span style="color: rgb(85, 85, 85);"><span style="color: rgb(85, 85, 85);"><span style="color: rgb(85, 85, 85);">显然，字符串之间的距离越小，它们就越接近。当两个字符串完全相等的时候，它们之间的距离就是0。</span></span></span></p>
+<h1 id="1-2-N-Gram的第三方库"><a href="#1-2-N-Gram的第三方库" class="headerlink" title="1.2 N-Gram的第三方库"></a>1.2 N-Gram的第三方库</h1><p>调用函数需要引用lucene的JAR包，我所使用的是lucene-suggest-5.0.0.jar，字符串Gorbachev和Gorbechyov所得之距离评分较高（=0.7），说明二者很接近；而girl和girlfriend所得之距离评分并不高（=0.3999），说明二者并不很接近。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">import org.apache.lucene.search.spell.*;</div><div class="line"></div><div class="line">public class NGram_distance &#123;</div><div class="line"></div><div class="line">    public static void main(String[] args) &#123;</div><div class="line"></div><div class="line">        NGramDistance ng = new NGramDistance();</div><div class="line">        float score1 = ng.getDistance(&quot;Gorbachev&quot;, &quot;Gorbechyov&quot;);</div><div class="line">        System.out.println(score1);</div><div class="line">        float score2 = ng.getDistance(&quot;girl&quot;, &quot;girlfriend&quot;);</div><div class="line">        System.out.println(score2);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="2-基于N-Gram模型评估语句的合理性"><a href="#2-基于N-Gram模型评估语句的合理性" class="headerlink" title="2 基于N-Gram模型评估语句的合理性"></a>2 基于N-Gram模型评估语句的合理性</h1><h2 id="2-1-应用场景"><a href="#2-1-应用场景" class="headerlink" title="2.1 应用场景"></a>2.1 应用场景</h2><p>首先，从统计的角度来看，自然语言中的一个句子 s 可以由任何词串构成，不过概率 P(s) 有大有小。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">s1 = 我刚吃过晚饭</div><div class="line">s2 = 刚我过晚饭吃</div></pre></td></tr></table></figure>
+<p>显然，对于中文而言 s1 是一个通顺而有意义的句子，而s2 则不是，所以对于中文来说，P(s1)&gt;P(s2) 。但不同语言来说，这两个概率值的大小可能会反转。</p>
+<p>另外一个例子是，如果我们给出了某个句子的一个节选，我们其实可以能够猜测后续的词应该是什么，例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">the large green__. Possible answer may be “mountain” or “tree” ?</div><div class="line">Kate swallowed the large green__. Possible answer may be “pill” or “broccoli” ?</div></pre></td></tr></table></figure>
+<p>显然，如果我们知道这个句子片段更多前面的内容的情况下，我们会得到一个更加准确的答案。这就告诉我们，前面的（历史）信息越多，对后面未知信息的约束就越强。</p>
+<h2 id="2-2-n-gram模型介绍"><a href="#2-2-n-gram模型介绍" class="headerlink" title="2.2 n-gram模型介绍"></a>2.2 n-gram模型介绍</h2><p>如果我们有一个由 m 个词组成的序列（或者说一个句子），我们希望算得概率 P(w1,w2,⋯,wm) ，根据链式规则，可得</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">P(w1,w2,⋯,wm)=P(w1)P(w2|w1)P(w3|w1,w2)⋯P(wm|w1,⋯,wm−1)</div></pre></td></tr></table></figure>
+<p>这个概率显然并不好算，不妨利用马尔科夫链的假设，即当前这个词仅仅跟前面几个有限的词相关，因此也就不必追溯到最开始的那个词，这样便可以大幅缩减上诉算式的长度。即</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">P(wi|w1,⋯,wi−1)=P(wi|wi−n+1,⋯,wi−1)</div></pre></td></tr></table></figure>
+<font color="#555555">当n取很小的值的时候</font>
+
+<font color="#555555"><img src="http://pic1.tianmaying.com/md-image/05b1aade5189275bf7f41f7cde1b499f.png" alt="屏幕快照 2017-05-17 下午5.42.51.png"></font>
+
+<font color="#555555">利用极大似然估计来求取参数，使得训练样本的概率取最大值，得到参数如下所示：</font>
+
+<font color="#555555"><img src="http://pic1.tianmaying.com/md-image/344a6121b3c8b2d4dcc1c1e3760be478.png" alt="屏幕快照 2017-05-17 下午5.45.04.png"><br></font>
+
+<h2 id="2-3-举例"><a href="#2-3-举例" class="headerlink" title="2.3 举例"></a>2.3 举例</h2><p>例如，现有语料库如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;s1&gt;&lt;s2&gt;yes no no no no yes&lt;/s2&gt;&lt;/s1&gt;</div><div class="line">&lt;s1&gt;&lt;s2&gt;no no no yes yes yes no&lt;/s2&gt;&lt;/s1&gt;</div></pre></td></tr></table></figure>
+<font color="#555555">需要评估下面句子的概率：</font>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;s1&gt;&lt;s2&gt;yes no no yes&lt;/s2&gt;&lt;/s1&gt;</div></pre></td></tr></table></figure>
+<font color="#555555">我们采用3-gram即三元模型进行计算，也就是需要</font>
+
+<font color="#555555"><img src="http://pic1.tianmaying.com/md-image/834f4523b4730664b07fc55a0f149ea2.png" alt="屏幕快照 2017-05-17 下午6.00.29.png"><br></font>
+
+<p>通过语料库对参数进行计算，例如针对P(yes|<s1>,<s2>)</s2></s1></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">P(yes|&lt;s1&gt;,&lt;s2&gt;)=C(yes,&lt;s1&gt;,&lt;s2&gt;)/C(&lt;s1&gt;,&lt;s2&gt;)=1/2=0.5</div></pre></td></tr></table></figure>
+<font color="#555555">因此概率得到结果为<span style="color: rgb(85, 85, 85);">1/2</span><span style="color: rgb(85, 85, 85);">×</span><span style="color: rgb(85, 85, 85);">1</span><span style="color: rgb(85, 85, 85);">×</span><span style="color: rgb(85, 85, 85);">1/2</span><span style="color: rgb(85, 85, 85);">×</span><span style="color: rgb(85, 85, 85);">2/5</span><span style="color: rgb(85, 85, 85);">×</span><span style="color: rgb(85, 85, 85);">1/2</span><span style="color: rgb(85, 85, 85);">×</span><span style="color: rgb(85, 85, 85);">1</span><span style="color: rgb(85, 85, 85);">=</span><span style="color: rgb(85, 85, 85);">0.05</span></font>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://xixy.github.io/2017/05/17/N-Gram模型/" data-id="cj2stsoix000fr7vvbfd1ccls" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/机器学习/">机器学习</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/自然语言处理/">自然语言处理</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/04/03/Java线程及锁机制/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Java线程及锁机制</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-C/">C/C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCC/">GCC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSON/">JSON</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UML/">UML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/反射/">反射</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/序列化/">序列化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/机器学习/">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编译/">编译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自然语言处理/">自然语言处理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/C-C/" style="font-size: 10px;">C/C++</a> <a href="/tags/GCC/" style="font-size: 10px;">GCC</a> <a href="/tags/JSON/" style="font-size: 10px;">JSON</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/elasticsearch/" style="font-size: 10px;">elasticsearch</a> <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/反射/" style="font-size: 15px;">反射</a> <a href="/tags/序列化/" style="font-size: 10px;">序列化</a> <a href="/tags/机器学习/" style="font-size: 15px;">机器学习</a> <a href="/tags/编译/" style="font-size: 15px;">编译</a> <a href="/tags/自然语言处理/" style="font-size: 10px;">自然语言处理</a> <a href="/tags/设计模式/" style="font-size: 10px;">设计模式</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/05/17/N-Gram模型/">N-Gram模型</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/03/Java线程及锁机制/">Java线程及锁机制</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/03/Java-StringBuilder类/">Java StringBuilder类</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/29/Java反射机制/">Java反射机制</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/29/反射技术用于工厂模式/">反射技术用于工厂模式</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 习翔宇<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

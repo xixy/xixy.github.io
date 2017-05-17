@@ -65,6 +65,101 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-N-Gram模型" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/05/17/N-Gram模型/" class="article-date">
+  <time datetime="2017-05-17T10:02:53.000Z" itemprop="datePublished">2017-05-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/05/17/N-Gram模型/">N-Gram模型</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>N-Gram是自然语言处理中的重要模型，通常用于两个场景：</p>
+<ol>
+<li>在NLP中人们基于一定的语料库，可以利用N-Gram来预计或者评估一个句子是否合理，即P(w1,w2,w3,…,wn)的大小</li>
+<li>用来评估两个字符串之间的相似性，是字符串模糊匹配中的常用手段</li>
+</ol>
+<h1 id="1-基于N-Gram模型定义的字符串距离"><a href="#1-基于N-Gram模型定义的字符串距离" class="headerlink" title="1 基于N-Gram模型定义的字符串距离"></a>1 基于N-Gram模型定义的字符串距离</h1><p>在自然语言处理时，最常用也最基础的一个操作是就是“模式匹配”，或者称为“字符串查找”。而模式匹配（字符串查找）又分为精确匹配和模糊匹配两种。</p>
+<ol>
+<li>所谓精确匹配，大家应该并不陌生，比如我们要统计一篇文章中关键词 “information” 出现的次数，这是所使用的方法就是精确的模式匹配。这方面的算法也比较多，而且应该是计算机相关专业必修的基础课中都会涉及到的内容，例如KMP算法、BM算法和BMH算法等等。</li>
+<li>另外一种匹配就是所谓的模糊匹配，它的应用也随处可见。例如，一般的文字处理软件（例如，Microsoft Word等）都会提供拼写检查功能。当你输入一个错误的单词，例如 “ informtaion” 时，系统会提示你是否要输入的词其实是 “information” 。将一个可能错拼单词映射到一个推荐的正确拼写上所才有的技术就是模糊匹配。</li>
+</ol>
+<p>模糊匹配的关键在于如何衡量两个长得很像的单词（或字符串）之间的“差异”。这种差异通常又称为“距离”。这方面的具体算法有很多，</p>
+<ol>
+<li>例如基于编辑距离的概念，人们设计出了 Smith-Waterman 算法和</li>
+<li>Needleman-Wunsch 算法，其中后者还是历史上最早的应用动态规划思想设计的算法之一。</li>
+</ol>
+<p>现在Smith-Waterman 算法和Needleman-Wunsch 算法在生物信息学领域也有重要应用，研究人员常常用它们来计算两个DNA序列片段之间的“差异”（或称“距离”）。甚至于在LeetCode上也有一道“No.72 Edit Distance”，其本质就是在考察上述两种算法的实现。可见相关问题离我们并不遥远。</p>
+<h2 id="1-1-N-Gram在模糊匹配中的应用"><a href="#1-1-N-Gram在模糊匹配中的应用" class="headerlink" title="1.1 N-Gram在模糊匹配中的应用"></a>1.1 N-Gram在模糊匹配中的应用</h2><p>我们除了可以定义两个字符串之间的编辑距离（通常利用Needleman-Wunsch算法或Smith-Waterman算法）之外，还可以定义它们之间的N-Gram距离。</p>
+<p>假设有一个字符串 s，那么该字符串的N-Gram就表示按长度 N 切分原词得到的词段，也就是 s 中所有长度为 N 的子字符串。例如<span style="color: rgb(85, 85, 85);">以 N = 2 为例对字符串Gorbachev和Gorbechyov进行分段，可得如下结果</span></p>
+<p><span style="color: rgb(85, 85, 85);"><img src="http://pic1.tianmaying.com/md-image/694322e47d05c525492529307a2267b9.png" alt="20160429144714271.png"></span></p>
+<p>设想如果有两个字符串，然后分别求它们的N-Gram，那么就可以从它们的共有子串的数量这个角度去定义两个字符串间的N-Gram距离。但是仅仅是简单地对共有子串进行计数显然也存在不足，这种方案显然忽略了两个字符串长度差异可能导致的问题。比如字符串 girl 和 girlfriend，二者所拥有的公共子串数量显然与 girl 和其自身所拥有的公共子串数量相等，但是我们并不能据此认为 girl 和girlfriend 是两个等同的匹配。</p>
+<p>为了解决该问题，有学者便提出以非重复的N-Gram分词为基础来定义 N-Gram距离这一概念</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">|GN(s)|+|GN(t)|−2×|GN(s)∩GN(t)|</div></pre></td></tr></table></figure>
+<p><span style="color: rgb(85, 85, 85);"><span style="color: rgb(85, 85, 85);">此处，</span><span style="color: rgb(85, 85, 85);">|GN(s)|</span> <span style="color: rgb(85, 85, 85);">是字符串</span> <span style="color: rgb(85, 85, 85);">s</span> <span style="color: rgb(85, 85, 85);">的 N-Gram集合，N 值一般取2或者3，对于上述的例子，我们计算N-Gram距离如下所示：</span></span></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">8 + 9 − 2 × 4 = 9</div></pre></td></tr></table></figure>
+<p><span style="color: rgb(85, 85, 85);"><span style="color: rgb(85, 85, 85);"><span style="color: rgb(85, 85, 85);">显然，字符串之间的距离越小，它们就越接近。当两个字符串完全相等的时候，它们之间的距离就是0。</span></span></span></p>
+<h1 id="1-2-N-Gram的第三方库"><a href="#1-2-N-Gram的第三方库" class="headerlink" title="1.2 N-Gram的第三方库"></a>1.2 N-Gram的第三方库</h1><p>调用函数需要引用lucene的JAR包，我所使用的是lucene-suggest-5.0.0.jar，字符串Gorbachev和Gorbechyov所得之距离评分较高（=0.7），说明二者很接近；而girl和girlfriend所得之距离评分并不高（=0.3999），说明二者并不很接近。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">import org.apache.lucene.search.spell.*;</div><div class="line"></div><div class="line">public class NGram_distance &#123;</div><div class="line"></div><div class="line">    public static void main(String[] args) &#123;</div><div class="line"></div><div class="line">        NGramDistance ng = new NGramDistance();</div><div class="line">        float score1 = ng.getDistance(&quot;Gorbachev&quot;, &quot;Gorbechyov&quot;);</div><div class="line">        System.out.println(score1);</div><div class="line">        float score2 = ng.getDistance(&quot;girl&quot;, &quot;girlfriend&quot;);</div><div class="line">        System.out.println(score2);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="2-基于N-Gram模型评估语句的合理性"><a href="#2-基于N-Gram模型评估语句的合理性" class="headerlink" title="2 基于N-Gram模型评估语句的合理性"></a>2 基于N-Gram模型评估语句的合理性</h1><h2 id="2-1-应用场景"><a href="#2-1-应用场景" class="headerlink" title="2.1 应用场景"></a>2.1 应用场景</h2><p>首先，从统计的角度来看，自然语言中的一个句子 s 可以由任何词串构成，不过概率 P(s) 有大有小。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">s1 = 我刚吃过晚饭</div><div class="line">s2 = 刚我过晚饭吃</div></pre></td></tr></table></figure>
+<p>显然，对于中文而言 s1 是一个通顺而有意义的句子，而s2 则不是，所以对于中文来说，P(s1)&gt;P(s2) 。但不同语言来说，这两个概率值的大小可能会反转。</p>
+<p>另外一个例子是，如果我们给出了某个句子的一个节选，我们其实可以能够猜测后续的词应该是什么，例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">the large green__. Possible answer may be “mountain” or “tree” ?</div><div class="line">Kate swallowed the large green__. Possible answer may be “pill” or “broccoli” ?</div></pre></td></tr></table></figure>
+<p>显然，如果我们知道这个句子片段更多前面的内容的情况下，我们会得到一个更加准确的答案。这就告诉我们，前面的（历史）信息越多，对后面未知信息的约束就越强。</p>
+<h2 id="2-2-n-gram模型介绍"><a href="#2-2-n-gram模型介绍" class="headerlink" title="2.2 n-gram模型介绍"></a>2.2 n-gram模型介绍</h2><p>如果我们有一个由 m 个词组成的序列（或者说一个句子），我们希望算得概率 P(w1,w2,⋯,wm) ，根据链式规则，可得</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">P(w1,w2,⋯,wm)=P(w1)P(w2|w1)P(w3|w1,w2)⋯P(wm|w1,⋯,wm−1)</div></pre></td></tr></table></figure>
+<p>这个概率显然并不好算，不妨利用马尔科夫链的假设，即当前这个词仅仅跟前面几个有限的词相关，因此也就不必追溯到最开始的那个词，这样便可以大幅缩减上诉算式的长度。即</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">P(wi|w1,⋯,wi−1)=P(wi|wi−n+1,⋯,wi−1)</div></pre></td></tr></table></figure>
+<font color="#555555">当n取很小的值的时候</font>
+
+<font color="#555555"><img src="http://pic1.tianmaying.com/md-image/05b1aade5189275bf7f41f7cde1b499f.png" alt="屏幕快照 2017-05-17 下午5.42.51.png"></font>
+
+<font color="#555555">利用极大似然估计来求取参数，使得训练样本的概率取最大值，得到参数如下所示：</font>
+
+<font color="#555555"><img src="http://pic1.tianmaying.com/md-image/344a6121b3c8b2d4dcc1c1e3760be478.png" alt="屏幕快照 2017-05-17 下午5.45.04.png"><br></font>
+
+<h2 id="2-3-举例"><a href="#2-3-举例" class="headerlink" title="2.3 举例"></a>2.3 举例</h2><p>例如，现有语料库如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;s1&gt;&lt;s2&gt;yes no no no no yes&lt;/s2&gt;&lt;/s1&gt;</div><div class="line">&lt;s1&gt;&lt;s2&gt;no no no yes yes yes no&lt;/s2&gt;&lt;/s1&gt;</div></pre></td></tr></table></figure>
+<font color="#555555">需要评估下面句子的概率：</font>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;s1&gt;&lt;s2&gt;yes no no yes&lt;/s2&gt;&lt;/s1&gt;</div></pre></td></tr></table></figure>
+<font color="#555555">我们采用3-gram即三元模型进行计算，也就是需要</font>
+
+<font color="#555555"><img src="http://pic1.tianmaying.com/md-image/834f4523b4730664b07fc55a0f149ea2.png" alt="屏幕快照 2017-05-17 下午6.00.29.png"><br></font>
+
+<p>通过语料库对参数进行计算，例如针对P(yes|<s1>,<s2>)</s2></s1></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">P(yes|&lt;s1&gt;,&lt;s2&gt;)=C(yes,&lt;s1&gt;,&lt;s2&gt;)/C(&lt;s1&gt;,&lt;s2&gt;)=1/2=0.5</div></pre></td></tr></table></figure>
+<font color="#555555">因此概率得到结果为<span style="color: rgb(85, 85, 85);">1/2</span><span style="color: rgb(85, 85, 85);">×</span><span style="color: rgb(85, 85, 85);">1</span><span style="color: rgb(85, 85, 85);">×</span><span style="color: rgb(85, 85, 85);">1/2</span><span style="color: rgb(85, 85, 85);">×</span><span style="color: rgb(85, 85, 85);">2/5</span><span style="color: rgb(85, 85, 85);">×</span><span style="color: rgb(85, 85, 85);">1/2</span><span style="color: rgb(85, 85, 85);">×</span><span style="color: rgb(85, 85, 85);">1</span><span style="color: rgb(85, 85, 85);">=</span><span style="color: rgb(85, 85, 85);">0.05</span></font>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://xixy.github.io/2017/05/17/N-Gram模型/" data-id="cj2stsoix000fr7vvbfd1ccls" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/机器学习/">机器学习</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/自然语言处理/">自然语言处理</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Java线程及锁机制" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/04/03/Java线程及锁机制/" class="article-date">
@@ -140,7 +235,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/04/03/Java线程及锁机制/" data-id="cj11sng3h0008l5vvnqklonwa" class="article-share-link">Share</a>
+      <a data-url="http://xixy.github.io/2017/04/03/Java线程及锁机制/" data-id="cj2stsoj4000lr7vv6euz63cd" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
@@ -191,7 +286,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/04/03/Java-StringBuilder类/" data-id="cj11sng330000l5vvbp6v6wlv" class="article-share-link">Share</a>
+      <a data-url="http://xixy.github.io/2017/04/03/Java-StringBuilder类/" data-id="cj2stsoi60000r7vvottb6gqg" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
@@ -246,7 +341,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/03/29/Java反射机制/" data-id="cj11sng3b0003l5vvju2o3b0s" class="article-share-link">Share</a>
+      <a data-url="http://xixy.github.io/2017/03/29/Java反射机制/" data-id="cj2stsoj0000ir7vvwbfmpsr7" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/反射/">反射</a></li></ul>
@@ -300,7 +395,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/03/29/反射技术用于工厂模式/" data-id="cj11sng3m000el5vvare978ln" class="article-share-link">Share</a>
+      <a data-url="http://xixy.github.io/2017/03/29/反射技术用于工厂模式/" data-id="cj2stsoj7000pr7vvxopqii38" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/反射/">反射</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/设计模式/">设计模式</a></li></ul>
@@ -376,7 +471,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/03/28/序列化与反序列化/" data-id="cj11sng3o000gl5vvs9yt5y1h" class="article-share-link">Share</a>
+      <a data-url="http://xixy.github.io/2017/03/28/序列化与反序列化/" data-id="cj2stsojd000ur7vvxiclvv9w" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/序列化/">序列化</a></li></ul>
@@ -440,7 +535,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/03/21/JUnit多测试用例的执行顺序问题/" data-id="cj11sng3c0004l5vvhbkuispe" class="article-share-link">Share</a>
+      <a data-url="http://xixy.github.io/2017/03/21/JUnit多测试用例的执行顺序问题/" data-id="cj2stsoiy000gr7vvy2fx9big" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
@@ -489,7 +584,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/03/12/elasticsearch-Java-API使用以及坑的注意/" data-id="cj11sng3r000ll5vv9h0h55af" class="article-share-link">Share</a>
+      <a data-url="http://xixy.github.io/2017/03/12/elasticsearch-Java-API使用以及坑的注意/" data-id="cj2stsojf000xr7vvbiaopsb0" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li></ul>
@@ -583,7 +678,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/03/12/Json格式总结/" data-id="cj11sng3m000dl5vv96a2yrvj" class="article-share-link">Share</a>
+      <a data-url="http://xixy.github.io/2017/03/12/Json格式总结/" data-id="cj2stsoj2000kr7vv1t9kiub9" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JSON/">JSON</a></li></ul>
@@ -696,106 +791,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/03/10/UML视图及diagram总结/" data-id="cj11sng3i000al5vv4eym0afe" class="article-share-link">Share</a>
+      <a data-url="http://xixy.github.io/2017/03/10/UML视图及diagram总结/" data-id="cj2stsoja000sr7vv8dw9jcks" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UML/">UML</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-机器学习性能评估指标" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/03/07/机器学习性能评估指标/" class="article-date">
-  <time datetime="2017-03-07T05:08:27.000Z" itemprop="datePublished">2017-03-07</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/07/机器学习性能评估指标/">机器学习性能评估指标</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="1-分类"><a href="#1-分类" class="headerlink" title="1 分类"></a>1 分类</h1><h2 id="1-1-混淆矩阵"><a href="#1-1-混淆矩阵" class="headerlink" title="1.1 混淆矩阵"></a>1.1 混淆矩阵</h2><p> Positive | Negative |<br>| — | — | — |<br>| Positive | True Positive | False Positive |<br>| Negative | False Negative | True Negative |</p>
-<ul>
-<li>True Positive：将正类预测为正类数</li>
-<li>True Negative：将负类预测为负类数</li>
-<li>False Positive：将负类预测为正类数，也就是误报</li>
-<li>False Negative：将正类预测为负类数</li>
-</ul>
-<p>这里的Positive/Negative表示预测得到的类型，而True/False表示该次预测是否正确</p>
-<h2 id="1-2-精确率、准确率、召回率"><a href="#1-2-精确率、准确率、召回率" class="headerlink" title="1.2 精确率、准确率、召回率"></a>1.2 精确率、准确率、召回率</h2><p>| 精确率precision | 是针对预测结果而言的，表示的是预测为正类的样本中有多少是真正的正样本P=TP/(TP+FP)<br> |<br>| 召回率Recall | 是针对我们原来的样本而言的，它表示的是样本中的正例有多少被预测正确了R=TP/(TP+FN)<br> |<br>| 准确率Accuray | 指的是预测准确的样本数占所有样本数的比例ACC = TP+TN/(TP+TN+FP+FN)<br>在正负样本不平衡的情况下，准确率这个评价指标有很大的缺陷，例如在正类很少只占了1%的情况下，将所有的样本都直接判断为负类，那么得到的准确率是99%</p>
-<p> |</p>
-<p>有时候需要在精确率与召回率之间进行权衡，有两种选择</p>
-<ol>
-<li><font color="#000000">画出精确率-召回率曲线(Precision-Recall Curve)，曲线下的面积称为AP分数（Average Precision Score)</font></li>
-<li><font color="#000000">计算F1分数</font>
-
-</li>
-</ol>
-<h2 id="1-3-ROC曲线"><a href="#1-3-ROC曲线" class="headerlink" title="1.3 ROC曲线"></a>1.3 ROC曲线</h2><h3 id="1-3-1-定义"><a href="#1-3-1-定义" class="headerlink" title="1.3.1 定义"></a>1.3.1 定义</h3><blockquote>
-<p><span style="color: rgb(0, 0, 0);"><span style="color: rgb(0, 0, 0);">In signal detection theory, a receiver operating characteristic (ROC), or simply ROC curve, is a graphical plot which illustrates the performance of a binary classifier system</span> <strong>as its discrimination threshold is varied</strong><span style="color: rgb(0, 0, 0);">.</span></span></p>
-</blockquote>
-<p><span style="color: rgb(0, 0, 0);">在逻辑回归里面，我们会设一个阈值，大于这个值的为正类，小于这个值为负类。如果我们减小这个阀值，那么更多的样本会被识别为正类。这会提高正类的识别率，但同时也会使得更多的负类被错误识别为正类。为了形象化这一变化，在此引入 ROC ，ROC 曲线可以用于评价一个分类器好坏。</span></p>
-<p><span style="color: rgb(0, 0, 0);">ROC曲线关注两个指标</span></p>
-<ol>
-<li><font color="#000000">True Positive Rate TPR=TP/(TP+FN)//代表将正类分对的概率</font></li>
-<li><font color="#000000">False Positive Rate FPR=FP/(FP+TN) 代表将负类错非为正类的概率</font>
-
-</li>
-</ol>
-<font color="#000000">在ROC空间中，每个点的横坐标是FPR，纵坐标是TPR，这也就描绘了分类器在TP和FP间的trade-off</font><font color="#000000"><span style="color: rgb(17, 17, 17);">接下来我们考虑ROC曲线图中的四个点和一条线。</span></font>
-
-<ol>
-<li><font color="#000000"><span style="color: rgb(17, 17, 17);">第一个点，(0,1)，即FPR=0, TPR=1，这意味着FN（false negative）=0，并且FP（false positive）=0。Wow，这是一个完美的分类器，它将所有的样本都正确分类。</span></font></li>
-<li><font color="#000000"><span style="color: rgb(17, 17, 17);">第二个点，(1,0)，即FPR=1，TPR=0，类似地分析可以发现这是一个最糟糕的分类器，因为它成功避开了所有的正确答案。</span></font></li>
-<li><font color="#000000"><span style="color: rgb(17, 17, 17);">第三个点，(0,0)，即FPR=TPR=0，即FP（false positive）=TP（true positive）=0，可以发现该分类器预测所有的样本都为负样本（negative）。</span></font></li>
-<li><font color="#000000"><span style="color: rgb(17, 17, 17);">类似的，第四个点（1,1），分类器实际上预测所有的样本都为正样本。经过以上的分析，我们可以断言，ROC曲线越接近左上角，该分类器的性能越好。</span></font>
-
-</li>
-</ol>
-<p><span style="color: rgb(0, 0, 0);"><span style="color: rgb(17, 17, 17);">下面考虑ROC曲线图中的虚线y=x上的点。这条对角线上的点其实表示的是一个采用随机猜测策略的分类器的结果，例如(0.5,0.5)，表示该分类器随机对于一半的样本猜测其为正样本，另外一半的样本为负样本。</span></span></p>
-<h3 id="1-3-2-如何画ROC曲线"><a href="#1-3-2-如何画ROC曲线" class="headerlink" title="1.3.2 如何画ROC曲线"></a>1.3.2 如何画ROC曲线</h3><p><span style="color: rgb(17, 17, 17);">对于一个特定的分类器和测试数据集，显然只能得到一个分类结果，即一组FPR和TPR结果，而要得到一个曲线，我们实际上需要一系列FPR和TPR的值，这又是如何得到的呢？</span></p>
-<p><span style="color: rgb(17, 17, 17);">问题在于“as its discrimination threashold is varied”。如何理解这里的“discrimination threashold”呢？我们忽略了分类器的一个重要功能“概率输出”，即表示分类器认为某个样本具有多大的概率属于正样本（或负样本）。通过更深入地了解各个分类器的内部机理，我们总能想办法得到一种概率输出。通常来说，是将一个实数范围通过某个变换映射到(0,1)区间[^3]。</span></p>
-<p><span style="color: rgb(17, 17, 17);">假如我们已经得到了所有样本的概率输出（属于正样本的概率），现在的问题是如何改变“discrimination threashold”？我们根据每个测试样本属于正样本的概率值从大到小排序。下图是一个示例，图中共有20个测试样本，“Class”一栏表示每个测试样本真正的标签（p表示正样本，n表示负样本），“Score”表示每个测试样本属于正样本的概率。</span></p>
-<p><span style="color: rgb(17, 17, 17);"><img src="http://pic1.tianmaying.com/md-image/38f2491143455d5006ad58f71babedb9.jpeg" alt="p8947351.jpg"></span></p>
-<p><span style="color: rgb(17, 17, 17);"><span style="color: rgb(17, 17, 17);">接下来，我们从高到低，依次将“Score”值作为阈值threshold，当测试样本属于正样本的概率大于或等于这个threshold时，我们认为它为正样本，否则为负样本。举例来说，对于图中的第4个样本，其“Score”值为0.6，那么样本1，2，3，4都被认为是正样本，因为它们的“Score”值都大于等于0.6，而其他样本则都认为是负样本。每次选取一个不同的threshold，我们就可以得到一组FPR和TPR，即ROC曲线上的一点。这样一来，我们一共得到了20组FPR和TPR的值，将它们画在ROC曲线的结果如下图：</span></span></p>
-<p><span style="color: rgb(17, 17, 17);"><img src="http://pic1.tianmaying.com/md-image/17fdd26cd2beccc38efa61f9767c5d37.jpeg" alt="2.jpg"></span></p>
-<p><span style="color: rgb(17, 17, 17);"></span></p>
-<p><span style="color: rgb(17, 17, 17);">当我们将threshold设置为1和0时，分别可以得到ROC曲线上的(0,0)和(1,1)两个点。将这些(FPR,TPR)对连接起来，就得到了ROC曲线。当threshold取值越多，ROC曲线越平滑。</span></p>
-<p><span style="color: rgb(17, 17, 17);">其实，我们并不一定要得到每个测试样本是正样本的概率值，只要得到这个分类器对该测试样本的“评分值”即可（评分值并不一定在(0,1)区间）。评分越高，表示分类器越肯定地认为这个测试样本是正样本，而且同时使用各个评分值作为threshold。我认为将评分值转化为概率更易于理解一些。</span></p>
-<p><span style="color: rgb(17, 17, 17);"><br></span></p>
-<h3 id="1-3-3-AUC计算"><a href="#1-3-3-AUC计算" class="headerlink" title="1.3.3 AUC计算"></a>1.3.3 AUC计算</h3><p><span style="color: rgb(17, 17, 17);">AUC（Area Under Curve）被定义为ROC曲线下的面积，显然这个面积的数值不会大于1。又由于ROC曲线一般都处于y=x这条直线的上方，所以AUC的取值范围在0.5和1之间。使用AUC值作为评价标准是因为很多时候ROC曲线并不能清晰的说明哪个分类器的效果更好，而作为一个数值，对应AUC更大的分类器效果更好。</span></p>
-<p><span style="color: rgb(17, 17, 17);"><br></span></p>
-<h3 id="1-3-4-使用ROC曲线的好处"><a href="#1-3-4-使用ROC曲线的好处" class="headerlink" title="1.3.4 使用ROC曲线的好处"></a>1.3.4 使用ROC曲线的好处</h3><p><span style="color: rgb(17, 17, 17);">既然已经这么多评价标准，为什么还要使用ROC和AUC呢？因为ROC曲线有个很好的特性：当测试集中的正负样本的分布变化的时候，ROC曲线能够保持不变。在实际的数据集中经常会出现类不平衡（class imbalance）现象，即负样本比正样本多很多（或者相反），而且测试数据中的正负样本的分布也可能随着时间变化。下图是ROC曲线和Precision-Recall曲线</span></p>
-<p><span style="color: rgb(17, 17, 17);"><img src="http://pic1.tianmaying.com/md-image/e811dddfa9362d8a2ef68282d7ec8ac9.jpeg" alt="3.jpg"><br></span></p>
-<p><span style="color: rgb(17, 17, 17);"><br></span></p>
-<p><span style="color: rgb(17, 17, 17);"><span style="color: rgb(17, 17, 17);">在上图中，(a)和(c)为ROC曲线，(b)和(d)为Precision-Recall曲线。(a)和(b)展示的是分类其在原始测试集（正负样本分布平衡）的结果，(c)和(d)是将测试集中负样本的数量增加到原来的10倍后，分类器的结果。可以明显的看出，ROC曲线基本保持原貌，而Precision-Recall曲线则变化较大。</span><br></span></p>
-<p><span style="color: rgb(17, 17, 17);"><br></span></p>
-<h2 id="1-4-PR曲线"><a href="#1-4-PR曲线" class="headerlink" title="1.4 PR曲线"></a>1.4 PR曲线</h2><p><span style="color: rgb(17, 17, 17);">PR曲线的x轴=recall，y轴=precision，precision与recall同时考虑才能确定算法好坏</span></p>
-<p><span style="color: rgb(17, 17, 17);"><img src="http://pic1.tianmaying.com/md-image/680f2cbafa1fd4f26562a18fa94953d9.png" alt="4.png"><br></span></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://xixy.github.io/2017/03/07/机器学习性能评估指标/" data-id="cj11sng3p000il5vvwx6kvl7q" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/机器学习/">机器学习</a></li></ul>
 
     </footer>
   </div>
@@ -820,7 +819,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-C/">C/C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCC/">GCC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSON/">JSON</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UML/">UML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/反射/">反射</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/序列化/">序列化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/机器学习/">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编译/">编译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-C/">C/C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCC/">GCC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSON/">JSON</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UML/">UML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/反射/">反射</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/序列化/">序列化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/机器学习/">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编译/">编译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自然语言处理/">自然语言处理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a></li></ul>
     </div>
   </div>
 
@@ -830,7 +829,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/C-C/" style="font-size: 10px;">C/C++</a> <a href="/tags/GCC/" style="font-size: 10px;">GCC</a> <a href="/tags/JSON/" style="font-size: 10px;">JSON</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/elasticsearch/" style="font-size: 10px;">elasticsearch</a> <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/反射/" style="font-size: 15px;">反射</a> <a href="/tags/序列化/" style="font-size: 10px;">序列化</a> <a href="/tags/机器学习/" style="font-size: 10px;">机器学习</a> <a href="/tags/编译/" style="font-size: 15px;">编译</a> <a href="/tags/设计模式/" style="font-size: 10px;">设计模式</a>
+      <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/C-C/" style="font-size: 10px;">C/C++</a> <a href="/tags/GCC/" style="font-size: 10px;">GCC</a> <a href="/tags/JSON/" style="font-size: 10px;">JSON</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/elasticsearch/" style="font-size: 10px;">elasticsearch</a> <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/反射/" style="font-size: 15px;">反射</a> <a href="/tags/序列化/" style="font-size: 10px;">序列化</a> <a href="/tags/机器学习/" style="font-size: 15px;">机器学习</a> <a href="/tags/编译/" style="font-size: 15px;">编译</a> <a href="/tags/自然语言处理/" style="font-size: 10px;">自然语言处理</a> <a href="/tags/设计模式/" style="font-size: 10px;">设计模式</a>
     </div>
   </div>
 
@@ -839,7 +838,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a></li></ul>
     </div>
   </div>
 
@@ -850,6 +849,10 @@
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2017/05/17/N-Gram模型/">N-Gram模型</a>
+          </li>
         
           <li>
             <a href="/2017/04/03/Java线程及锁机制/">Java线程及锁机制</a>
@@ -865,10 +868,6 @@
         
           <li>
             <a href="/2017/03/29/反射技术用于工厂模式/">反射技术用于工厂模式</a>
-          </li>
-        
-          <li>
-            <a href="/2017/03/28/序列化与反序列化/">序列化与反序列化</a>
           </li>
         
       </ul>
