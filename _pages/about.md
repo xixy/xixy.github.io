@@ -30,7 +30,7 @@ My research interest includes event extraction and dialogue systems. I have publ
 
 1. Dialog-to-Actions: Building Task-Oriented Dialogue System via Action-Level Generation   
  Yuncheng Hua^, **Xiangyu Xi^** (equal contribution), Zheng Jiang, Guanwei Zhang, Chaobo Sun, Guanglu Wan  
- *SIGIR 2023* 
+ *SIGIR 2023* | [paper](https://arxiv.org/pdf/2304.00884.pdf)
 1. MUSIED: A Benchmark for Event Detection from Multi-Source Heterogeneous Informal Texts  
  **Xiangyu Xi**, Jianwei Lv, Shuaipeng Liu, Wei Ye, Fan Yang, Guanglu Wan  
  *EMNLP 2022* | [paper](https://arxiv.org/abs/2211.13896) | [code](https://github.com/myeclipse/MUSIED)  
