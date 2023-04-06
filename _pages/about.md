@@ -21,6 +21,7 @@ I am working on task-oriented dialogue systems in [Meituan](https://about.meitua
 My research interest includes event extraction and dialogue systems. I have published several papers at the top conferences including ACL, SIGIR, EMNLP, NAACL, CIKM, etc.
 
 # 🔥 News
+- *2023.04*: &nbsp;🎉🎉 One paper is accepted by SIGIR 2023! The Dialog-To-Action (D2A) method can tackle the reliability and the efficiency problems encountered with the existing end-to-end generation methods.
 - *2022.10*: &nbsp;🎉🎉 One paper is accepted by EMNLP 2022! The dataset and baselines are to be released soon.
 - *2022.08*: &nbsp;🎉🎉 Two papers are accepted by Coling 2022! 
 - *2022.05*: &nbsp;🎉🎉 One paper is accepted by SIGIR 2022! 
