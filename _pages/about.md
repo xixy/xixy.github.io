@@ -28,7 +28,9 @@ My research interest includes event extraction and dialogue systems. I have publ
 
 
 # 📝 Publications 
-
+1. SampleMix: A Sample-wise Pre-training Data Mixing Strategey by Coordinating Data Quality and Diversity  
+ **Xiangyu Xi**^, Deyang Kong^, Jian Yang^, Jiawei Yang, Zhengyu Chen, Wei Wang, Jingang Wang, Xunliang Cai, Shikun Zhang, Wei Ye  
+[paper](https://arxiv.org/abs/2503.01506)
 1. Dialog-to-Actions: Building Task-Oriented Dialogue System via Action-Level Generation   
  Yuncheng Hua^, **Xiangyu Xi^** (equal contribution), Zheng Jiang, Guanwei Zhang, Chaobo Sun, Guanglu Wan  
  *SIGIR 2023* | [paper](https://dl.acm.org/doi/10.1145/3539618.3591832)
